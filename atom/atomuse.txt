@@ -1,0 +1,4 @@
+
+
+const [atId, setAtId] = useRecoilState(atomId); //아이디
+const [atGrade,setAtGrade] = useRecoilState(atomGrade); //학년
