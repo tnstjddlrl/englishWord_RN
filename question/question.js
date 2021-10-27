@@ -23,14 +23,16 @@ var smallInterval;
 
 const Question = () => {
 
-    const [timer, setTimer] = useState(10)
+    const [timer, setTimer] = useState(300)
     const [secon, setSecon] = useState('00')
 
-    const [nextTimer, setNextTimer] = useState(5)
+    const [smallTimer, setSmallTimer] = useState(5)
 
     const [touchBlockModal, setTouchBlockModal] = useState(false)
 
     const [atGrade, setAtGrade] = useRecoilState(atomGrade); //학년
+
+    const [redQuestion, setRedQuestion] = useState(getRandomInt(1, 6))
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,8 +54,14 @@ const Question = () => {
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
 
-    function calculSecons(params) {
+        return Math.floor(Math.random() * (max - min)) + min; //최댓값은 제외, 최솟값은 포함
+    }
+
+    function calculSecons() {
         if (timer <= 0) {
             clearInterval(interval);
             Alert.alert('시간종료!');
@@ -68,15 +76,15 @@ const Question = () => {
         };
     }
 
-    function intervalset(params) {
+    function intervalset() {
         return setInterval(() => { setTimer((res) => res - 1) }, 1002);
     };
 
-    function smallIntervalset(params) {
-        return setInterval(() => { setNextTimer((res) => res - 1) }, 1002);
+    function smallIntervalset() {
+        return setInterval(() => { setSmallTimer((res) => res - 1) }, 1002);
     };
 
-    function AllClearInterval(params) {
+    function AllClearInterval() {
         clearInterval(interval);
         clearInterval(smallInterval);
 
@@ -90,15 +98,17 @@ const Question = () => {
         AllClearInterval();
 
         setTimeout(() => {
+            setRedQuestion((rr) => { });
+
             interval = intervalset();
-            setNextTimer(5);
+            setSmallTimer(5);
             smallInterval = smallIntervalset();
             setTouchBlockModal(false);
         }, setint);
     };
 
-    function smallTimerOut(params) {
-        if (nextTimer <= 0) {//작은타이머 숫자 다 지나가면 실행됨
+    function smallTimerOut() {
+        if (smallTimer <= 0) {//작은타이머 숫자 다 지나가면 실행됨
             timerStopAndGo(1002)
         };
     };
@@ -110,11 +120,15 @@ const Question = () => {
 
     useEffect(() => {
         smallTimerOut();
-    }, [nextTimer]);
+    }, [smallTimer]);
 
     useEffect(() => {
         interval = intervalset();
         smallInterval = smallIntervalset();
+
+        return () => {
+            AllClearInterval()
+        }
     }, []);
 
     return (
@@ -137,31 +151,31 @@ const Question = () => {
             <View style={{ width: chwidth, alignItems: 'center' }}>
 
                 <View>
-                    <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center' }}>
-                        <Text>단어1</Text>
+                    <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 1 ? 'pink' : 'white' }}>
+                        <Text>{redQuestion == 1 ? '정답' : '오답1'}</Text>
                     </View>
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
 
-                    <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center' }}>
-                        <Text>단어2</Text>
+                    <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 2 ? 'pink' : 'white' }}>
+                        <Text>{redQuestion == 2 ? '정답' : '오답2'}</Text>
                     </View>
 
-                    <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center' }}>
-                        <Text>단어3</Text>
+                    <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 3 ? 'pink' : 'white' }}>
+                        <Text>{redQuestion == 3 ? '정답' : '오답3'}</Text>
                     </View>
 
-                    <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center' }}>
-                        <Text>단어4</Text>
+                    <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 4 ? 'pink' : 'white' }}>
+                        <Text>{redQuestion == 4 ? '정답' : '오답4'}</Text>
                     </View>
 
                 </View>
 
                 <View>
 
-                    <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center' }}>
-                        <Text>단어5</Text>
+                    <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 5 ? 'pink' : 'white' }}>
+                        <Text>{redQuestion == 5 ? '정답' : '오답5'}</Text>
                     </View>
 
                 </View>
@@ -172,7 +186,7 @@ const Question = () => {
             {/* 타이머 시작 */}
             <View style={{ alignItems: 'center', marginTop: 20 }}>
                 <View style={{ borderWidth: 1, width: chwidth - 40, height: 50, alignItems: 'center' }}>
-                    <Text>{`${parseInt((timer % 3600) / 60)}:${secon} / ${Math.floor(nextTimer)}`}</Text>
+                    <Text>{`${parseInt((timer % 3600) / 60)}:${secon} / ${Math.floor(smallTimer)}`}</Text>
 
                 </View>
             </View>
@@ -180,7 +194,10 @@ const Question = () => {
 
             {/* 정답상자 시작 */}
             <View style={{ alignItems: 'center', marginTop: 20 }}>
-                <TouchableWithoutFeedback onPress={() => { console.log('1') }}>
+                <TouchableWithoutFeedback onPress={() => {
+                    console.log('1');
+                    timerStopAndGo(1002);
+                }}>
                     <View style={{ borderWidth: 1, width: chwidth - 40, height: 50, alignItems: 'center' }}>
                         <Text>정답1</Text>
                     </View>
