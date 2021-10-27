@@ -61,15 +61,12 @@ const Question = () => {
 
             clearInterval(smallInterval)
         };
-
-        // console.log(String(timer % 60))
         if (String(Math.floor(timer % 60)).length == 1) {
             setSecon('0' + String(Math.floor(timer % 60)));
         } else {
             setSecon(String(Math.floor(timer % 60)));
         };
     }
-
 
     function intervalset(params) {
         return setInterval(() => { setTimer((res) => res - 1) }, 1002);
@@ -79,18 +76,22 @@ const Question = () => {
         return setInterval(() => { setNextTimer((res) => res - 1) }, 1002);
     };
 
-    function timerStopAndGo(setint) {
-        setTouchBlockModal(true);
-
+    function AllClearInterval(params) {
         clearInterval(interval);
         clearInterval(smallInterval);
 
         interval = null;
         smallInterval = null;
+    }
+
+    function timerStopAndGo(setint) {
+        setTouchBlockModal(true);
+
+        AllClearInterval();
 
         setTimeout(() => {
             interval = intervalset();
-            setNextTimer(5.0);
+            setNextTimer(5);
             smallInterval = smallIntervalset();
             setTouchBlockModal(false);
         }, setint);
@@ -98,24 +99,11 @@ const Question = () => {
 
     function smallTimerOut(params) {
         if (nextTimer <= 0) {//작은타이머 숫자 다 지나가면 실행됨
-            setTouchBlockModal(true);
-            clearInterval(smallInterval);
-            clearInterval(interval);
-
-            interval = null;
-            smallInterval = null;
-
-            setTimeout(() => {
-                interval = intervalset();
-                setNextTimer(5);
-                smallInterval = smallIntervalset();
-                setTouchBlockModal(false);
-            }, 1002);
+            timerStopAndGo(1002)
         };
     };
 
     useEffect(() => {
-        // console.log(timer)
         calculSecons();
     }, [timer]);
 
