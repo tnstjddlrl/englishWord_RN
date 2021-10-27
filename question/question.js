@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/core';
 import React, { useEffect, useState } from 'react';
 import {
     Alert,
@@ -22,18 +23,29 @@ var interval;
 var smallInterval;
 
 const Question = () => {
+    const navigation = useNavigation()
 
-    const [timer, setTimer] = useState(300)
-    const [secon, setSecon] = useState('00')
+    const [timer, setTimer] = useState(300);
+    const [secon, setSecon] = useState('00');
 
-    const [smallTimer, setSmallTimer] = useState(5)
+    const [smallTimer, setSmallTimer] = useState(5);
+    const [redQuestion, setRedQuestion] = useState(getRandomInt(1, 6));
 
-    const [touchBlockModal, setTouchBlockModal] = useState(false)
+    const [touchBlockModal, setTouchBlockModal] = useState(false);
+
+    const [currentPlay, setCurrentPlay] = useState(0);
 
     const [atGrade, setAtGrade] = useRecoilState(atomGrade); //학년
 
-    const [redQuestion, setRedQuestion] = useState(getRandomInt(1, 6))
+    var errorArray = ['감자', '고구마', '오이', '토마토', '정답']
 
+    const [collect0, setCollect0] = useState('정답')
+
+    const [collect1, setCollect1] = useState('')
+    const [collect2, setCollect2] = useState('')
+    const [collect3, setCollect3] = useState('')
+    const [collect4, setCollect4] = useState('')
+    const [collect5, setCollect5] = useState('')
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     const Questionrequest = async () => {
@@ -58,24 +70,19 @@ const Question = () => {
         min = Math.ceil(min);
         max = Math.floor(max);
 
+        for (var i = 0; i < 7; i++) {
+            var random = Math.floor(Math.random() * (max - min)) + min;
+            if (random !== redQuestion) {
+                return random
+            } else {
+                // console.log('같은거!')
+            }
+        }
         return Math.floor(Math.random() * (max - min)) + min; //최댓값은 제외, 최솟값은 포함
     }
 
-    function calculSecons() {
-        if (timer <= 0) {
-            clearInterval(interval);
-            Alert.alert('시간종료!');
-            setTimer(0);
 
-            clearInterval(smallInterval)
-        };
-        if (String(Math.floor(timer % 60)).length == 1) {
-            setSecon('0' + String(Math.floor(timer % 60)));
-        } else {
-            setSecon(String(Math.floor(timer % 60)));
-        };
-    }
-
+    ///////////////////////////////////////////////////////////////////////////////////////////
     function intervalset() {
         return setInterval(() => { setTimer((res) => res - 1) }, 1002);
     };
@@ -92,37 +99,8 @@ const Question = () => {
         smallInterval = null;
     }
 
-    function timerStopAndGo(setint) {
-        setTouchBlockModal(true);
-
-        AllClearInterval();
-
-        setTimeout(() => {
-            setRedQuestion((rr) => { });
-
-            interval = intervalset();
-            setSmallTimer(5);
-            smallInterval = smallIntervalset();
-            setTouchBlockModal(false);
-        }, setint);
-    };
-
-    function smallTimerOut() {
-        if (smallTimer <= 0) {//작은타이머 숫자 다 지나가면 실행됨
-            timerStopAndGo(1002)
-        };
-    };
-
     useEffect(() => {
-        calculSecons();
-    }, [timer]);
-
-
-    useEffect(() => {
-        smallTimerOut();
-    }, [smallTimer]);
-
-    useEffect(() => {
+        randomCollect()
         interval = intervalset();
         smallInterval = smallIntervalset();
 
@@ -130,6 +108,87 @@ const Question = () => {
             AllClearInterval()
         }
     }, []);
+    /////////////////////////////////////////////////////////////////////////////////////////
+    function timerStopAndGo(setint) {
+        setTouchBlockModal(true);
+
+        AllClearInterval();
+
+        setTimeout(() => {
+            setRedQuestion(getRandomInt(1, 6));
+            randomCollect()
+            interval = intervalset();
+            setSmallTimer(5);
+            smallInterval = smallIntervalset();
+            setTouchBlockModal(false);
+            setCurrentPlay((rr) => rr + 1)
+        }, setint);
+    };
+
+    function arrayselect() {
+        var numbers = [];
+        var pickNumbers = 5;
+
+        for (var insertCur = 0; insertCur < pickNumbers; insertCur++) {
+            numbers[insertCur] = Math.floor(Math.random() * 5) + 1;
+            for (var searchCur = 0; searchCur < insertCur; searchCur++) {
+                if (numbers[insertCur] == numbers[searchCur]) {
+                    insertCur--;
+                    break;
+                }
+            }
+        }
+        return numbers;
+    }
+
+    function randomCollect() {
+        var array = arrayselect()
+
+        setCollect1(errorArray[array[0] - 1])
+        setCollect2(errorArray[array[1] - 1])
+        setCollect3(errorArray[array[2] - 1])
+        setCollect4(errorArray[array[3] - 1])
+        setCollect5(errorArray[array[4] - 1])
+    }
+
+    function checkQuestion(collect) {
+        timerStopAndGo(1002)
+        if (collect == collect0) {
+            console.log('정답입니다!')
+        } else {
+            console.log('오답입니다!')
+        }
+    }
+    //////////////////////////////////////////////////////////////////////////////////////
+    function calculSecons() {
+        if (timer <= 0) {
+            clearInterval(interval);
+            Alert.alert('시간종료!');
+            setTimer(0);
+
+            clearInterval(smallInterval)
+        };
+        if (String(Math.floor(timer % 60)).length == 1) {
+            setSecon('0' + String(Math.floor(timer % 60)));
+        } else {
+            setSecon(String(Math.floor(timer % 60)));
+        };
+    }
+
+    useEffect(() => {
+        calculSecons();
+    }, [timer]);
+    ////////////////////////////////////////////////////////////////////////////////////////
+
+    function smallTimerOut() {
+        if (smallTimer <= 0) {//작은타이머 숫자 다 지나가면 실행됨
+            timerStopAndGo(1002)
+        };
+    };
+    useEffect(() => {
+        smallTimerOut();
+    }, [smallTimer]);
+
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -137,13 +196,17 @@ const Question = () => {
             {/* 헤더시작 */}
             <View style={{ width: chwidth, height: 50, flexDirection: 'row', justifyContent: 'space-between' }}>
                 <Text>로고</Text>
-                <Text>뒤로가기</Text>
+                <TouchableWithoutFeedback onPress={() => {
+                    navigation.goBack();
+                }}>
+                    <Text>뒤로가기</Text>
+                </TouchableWithoutFeedback>
             </View>
             {/* 헤더 끝 */}
 
             {/* 개인정보 시작 */}
             <View style={{ width: chwidth, height: 50 }}>
-                <Text>개인정보</Text>
+                <Text>진행횟수 {currentPlay}회</Text>
             </View>
             {/* 개인정보 끝 */}
 
@@ -195,31 +258,43 @@ const Question = () => {
             {/* 정답상자 시작 */}
             <View style={{ alignItems: 'center', marginTop: 20 }}>
                 <TouchableWithoutFeedback onPress={() => {
-                    console.log('1');
-                    timerStopAndGo(1002);
+                    console.log(collect1);
+                    checkQuestion(collect1)
                 }}>
                     <View style={{ borderWidth: 1, width: chwidth - 40, height: 50, alignItems: 'center' }}>
-                        <Text>정답1</Text>
+                        <Text>{collect1}</Text>
                     </View>
                 </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={() => { console.log('2') }}>
+                <TouchableWithoutFeedback onPress={() => {
+                    console.log(collect2);
+                    checkQuestion(collect2)
+                }}>
                     <View style={{ borderWidth: 1, width: chwidth - 40, height: 50, alignItems: 'center' }}>
-                        <Text>정답2</Text>
+                        <Text>{collect2}</Text>
                     </View>
                 </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={() => { console.log('3') }}>
+                <TouchableWithoutFeedback onPress={() => {
+                    console.log(collect3);
+                    checkQuestion(collect3)
+                }}>
                     <View style={{ borderWidth: 1, width: chwidth - 40, height: 50, alignItems: 'center' }}>
-                        <Text>정답3</Text>
+                        <Text>{collect3}</Text>
                     </View>
                 </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={() => { console.log('4') }}>
+                <TouchableWithoutFeedback onPress={() => {
+                    console.log(collect4);
+                    checkQuestion(collect4)
+                }}>
                     <View style={{ borderWidth: 1, width: chwidth - 40, height: 50, alignItems: 'center' }}>
-                        <Text>정답4</Text>
+                        <Text>{collect4}</Text>
                     </View>
                 </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={() => { console.log('5') }}>
+                <TouchableWithoutFeedback onPress={() => {
+                    console.log(collect5);
+                    checkQuestion(collect5)
+                }}>
                     <View style={{ borderWidth: 1, width: chwidth - 40, height: 50, alignItems: 'center' }}>
-                        <Text>정답5</Text>
+                        <Text>{collect5}</Text>
                     </View>
                 </TouchableWithoutFeedback>
             </View>
