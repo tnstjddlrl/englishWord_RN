@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/core';
 import React, { useEffect, useState } from 'react';
 import {
     Alert,
@@ -13,8 +12,13 @@ import {
     useColorScheme,
     View,
 } from 'react-native';
+
 import { useRecoilState } from 'recoil';
-import { atomGrade } from '../atom/atom';
+import { atomGrade, atomId } from '../atom/atom';
+
+import { useNavigation } from '@react-navigation/core';
+import axios from 'axios';
+import Toast from 'react-native-toast-message';
 
 const chwidth = Dimensions.get('screen').width;
 const chheight = Dimensions.get('screen').height;
@@ -36,10 +40,17 @@ const Question = () => {
     const [currentPlay, setCurrentPlay] = useState(0);
 
     const [atGrade, setAtGrade] = useRecoilState(atomGrade); //학년
+    const [atId, setAtId] = useRecoilState(atomId); //아이디
 
-    var errorArray = ['감자', '고구마', '오이', '토마토', '정답']
 
-    const [collect0, setCollect0] = useState('정답')
+    const [errorArray, setErrorArray] = useState([])
+
+    const [questionList, setQuscionList] = useState([])
+
+    const [axQuestion, setAxQuestion] = useState([])
+    const [axAnswer, setAxAnswer] = useState([])
+
+    const [collect0, setCollect0] = useState('')
 
     const [collect1, setCollect1] = useState('')
     const [collect2, setCollect2] = useState('')
@@ -49,19 +60,21 @@ const Question = () => {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     const Questionrequest = async () => {
-        console.log(id + pwd)
         await axios.get('https://hjong0108.cafe24.com/bbs/post.php', {
             params: {
-                type: 'question',
-                grade: 'test'
+                type: 'new_course',
+                grade: '고등학교1학년', //atGrade
+                id: 'test', //atId
+                cnt: 5,
             },
         }).catch((err) => {
             console.log(err)
         }).then(async (res) => {
-            console.log('리턴 : ' + res.data)
-            if (res.data == '') {
+            console.log('리턴 : ' + res.data);
+            console.log(res.data)
 
-            }
+            setAxAnswer(res.data.answers)
+            setAxQuestion(res.data.questions)
         })
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -73,14 +86,13 @@ const Question = () => {
         for (var i = 0; i < 7; i++) {
             var random = Math.floor(Math.random() * (max - min)) + min;
             if (random !== redQuestion) {
-                return random
+                return random;
             } else {
-                // console.log('같은거!')
+
             }
         }
-        return Math.floor(Math.random() * (max - min)) + min; //최댓값은 제외, 최솟값은 포함
+        return Math.floor(Math.random() * (max - min)) + min;
     }
-
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     function intervalset() {
@@ -100,7 +112,10 @@ const Question = () => {
     }
 
     useEffect(() => {
+        Questionrequest()
+        setCollect0(axQuestion[redQuestion].En_name)
         randomCollect()
+        setQuscionList(arrayselect(10))
         interval = intervalset();
         smallInterval = smallIntervalset();
 
@@ -115,7 +130,10 @@ const Question = () => {
         AllClearInterval();
 
         setTimeout(() => {
+
             setRedQuestion(getRandomInt(1, 6));
+            setCollect0(axQuestion[redQuestion - 1].En_name)
+
             randomCollect()
             interval = intervalset();
             setSmallTimer(5);
@@ -125,9 +143,9 @@ const Question = () => {
         }, setint);
     };
 
-    function arrayselect() {
+    function arrayselect(setint) {
         var numbers = [];
-        var pickNumbers = 5;
+        var pickNumbers = setint;
 
         for (var insertCur = 0; insertCur < pickNumbers; insertCur++) {
             numbers[insertCur] = Math.floor(Math.random() * 5) + 1;
@@ -142,7 +160,7 @@ const Question = () => {
     }
 
     function randomCollect() {
-        var array = arrayselect()
+        var array = arrayselect(5)
 
         setCollect1(errorArray[array[0] - 1])
         setCollect2(errorArray[array[1] - 1])
@@ -155,8 +173,19 @@ const Question = () => {
         timerStopAndGo(1002)
         if (collect == collect0) {
             console.log('정답입니다!')
+            Toast.show({
+                type: 'success',
+                text1: '정답입니다!',
+                visibilityTime: 1000,
+            });
+
         } else {
             console.log('오답입니다!')
+            Toast.show({
+                type: 'error',
+                text1: '오답입니다!',
+                visibilityTime: 1000,
+            });
         }
     }
     //////////////////////////////////////////////////////////////////////////////////////
@@ -193,6 +222,7 @@ const Question = () => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
 
+
             {/* 헤더시작 */}
             <View style={{ width: chwidth, height: 50, flexDirection: 'row', justifyContent: 'space-between' }}>
                 <Text>로고</Text>
@@ -211,39 +241,35 @@ const Question = () => {
             {/* 개인정보 끝 */}
 
             {/* 십자 및 9개 문제상자 */}
-            <View style={{ width: chwidth, alignItems: 'center' }}>
+            {axAnswer &&
+                <View style={{ width: chwidth, alignItems: 'center' }}>
+                    <View>
+                        <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 1 ? 'pink' : 'white' }}>
+                            <Text>{redQuestion == 1 ? collect0 : axAnswer[questionList[0]].En_name}</Text>
+                        </View>
+                    </View>
 
-                <View>
-                    <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 1 ? 'pink' : 'white' }}>
-                        <Text>{redQuestion == 1 ? '정답' : '오답1'}</Text>
+                    <View style={{ flexDirection: 'row' }}>
+                        <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 2 ? 'pink' : 'white' }}>
+                            <Text>{redQuestion == 2 ? collect0 : axAnswer[questionList[1]].En_name}</Text>
+                        </View>
+
+                        <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 3 ? 'pink' : 'white' }}>
+                            <Text>{redQuestion == 3 ? collect0 : axAnswer[questionList[2]].En_name}</Text>
+                        </View>
+
+                        <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 4 ? 'pink' : 'white' }}>
+                            <Text>{redQuestion == 4 ? collect0 : axAnswer[questionList[3]].En_name}</Text>
+                        </View>
+                    </View>
+
+                    <View>
+                        <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 5 ? 'pink' : 'white' }}>
+                            <Text>{redQuestion == 5 ? collect0 : axAnswer[questionList[5]].En_name}</Text>
+                        </View>
                     </View>
                 </View>
-
-                <View style={{ flexDirection: 'row' }}>
-
-                    <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 2 ? 'pink' : 'white' }}>
-                        <Text>{redQuestion == 2 ? '정답' : '오답2'}</Text>
-                    </View>
-
-                    <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 3 ? 'pink' : 'white' }}>
-                        <Text>{redQuestion == 3 ? '정답' : '오답3'}</Text>
-                    </View>
-
-                    <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 4 ? 'pink' : 'white' }}>
-                        <Text>{redQuestion == 4 ? '정답' : '오답4'}</Text>
-                    </View>
-
-                </View>
-
-                <View>
-
-                    <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 5 ? 'pink' : 'white' }}>
-                        <Text>{redQuestion == 5 ? '정답' : '오답5'}</Text>
-                    </View>
-
-                </View>
-
-            </View>
+            }
             {/* 문제상자 끝 */}
 
             {/* 타이머 시작 */}
@@ -305,6 +331,8 @@ const Question = () => {
                 <SafeAreaView style={{ flex: 1 }}>
                 </SafeAreaView>
             </Modal>
+
+            <Toast ref={(ref) => Toast.setRef(ref)} />
 
         </SafeAreaView>
     )
