@@ -20,10 +20,6 @@ const Fakemain = () => {
                 <Text style={{ margin: 20, fontSize: 20 }}>로그인</Text>
             </TouchableWithoutFeedback>
 
-            <TouchableWithoutFeedback onPress={() => { navigation.navigate('회원가입') }}>
-                <Text style={{ margin: 20, fontSize: 20 }}>회원가입</Text>
-            </TouchableWithoutFeedback>
-
             <TouchableWithoutFeedback onPress={() => { navigation.navigate('코스선택') }}>
                 <Text style={{ margin: 20, fontSize: 20 }}>코스선택</Text>
             </TouchableWithoutFeedback>
