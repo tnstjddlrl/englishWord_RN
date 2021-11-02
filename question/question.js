@@ -56,14 +56,26 @@ const Question = () => {
     const [axQuestion, setAxQuestion] = useState([])
     const [axAnswer, setAxAnswer] = useState([])
 
-    const [collect0, setCollect0] = useState('') //정답 보여주기용
+    const [cc1, setCc1] = useState('e')
+    const [cc2, setCc2] = useState('e')
+    const [cc3, setCc3] = useState('e')
+    const [cc4, setCc4] = useState('e')
+    const [cc5, setCc5] = useState('e')
+
 
     const [collect1, setCollect1] = useState('')    //
     const [collect2, setCollect2] = useState('')
     const [collect3, setCollect3] = useState('')
     const [collect4, setCollect4] = useState('')
-    const [collect5, setCollect5] = useState('')    //오류보여주기 용
+    const [collect5, setCollect5] = useState('')    //상단 정답 및 오류보여주기 용
+    const [collect1_kor, setCollect1_kor] = useState('')
+    const [collect2_kor, setCollect2_kor] = useState('')
+    const [collect3_kor, setCollect3_kor] = useState('')
+    const [collect4_kor, setCollect4_kor] = useState('')
+    const [collect5_kor, setCollect5_kor] = useState('')
 
+
+    const [collect0, setCollect0] = useState('') //정답 보여주기용
     const [collect0_kor, setCollect0_kor] = useState('') //정답 확인용
 
 
@@ -73,11 +85,6 @@ const Question = () => {
     const [bottom_collect4, setbottom_collect4] = useState('')
     const [bottom_collect5, setbottom_collect5] = useState('')
 
-    // const [collect1_kor, setCollect1_kor] = useState('')
-    // const [collect2_kor, setCollect2_kor] = useState('')
-    // const [collect3_kor, setCollect3_kor] = useState('')
-    // const [collect4_kor, setCollect4_kor] = useState('')
-    // const [collect5_kor, setCollect5_kor] = useState('')
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     const Questionrequest = async () => {
@@ -122,11 +129,11 @@ const Question = () => {
 
     function startBtn_click(params) {
 
-
         console.log('처음도착')
         if ((axQuestion !== []) && arriveFirst) {
             setArriveFirst(false);
-            randomCollect(redQuestion);
+            setUp()
+            isEnKo(redQuestion);
 
             interval = intervalset();
             smallInterval = smallIntervalset();
@@ -170,6 +177,20 @@ const Question = () => {
 
 
     /////////////////////////////////////////////////////////////////////////////////////////
+    function setUp(params) {
+        setCollect1(axQuestion[0].En_name);
+        setCollect2(axQuestion[1].En_name);
+        setCollect3(axQuestion[2].En_name);
+        setCollect4(axQuestion[3].En_name);
+        setCollect5(axQuestion[4].En_name);
+        setCollect1_kor(axQuestion[0].Ko_name);
+        setCollect2_kor(axQuestion[1].Ko_name);
+        setCollect3_kor(axQuestion[2].Ko_name);
+        setCollect4_kor(axQuestion[3].Ko_name);
+        setCollect5_kor(axQuestion[4].Ko_name);
+    }
+
+
     function timerStopAndGo(setint) {
         setTouchBlockModal(true);
 
@@ -179,77 +200,108 @@ const Question = () => {
             var randomint = getRandomInt(1, 6, redQuestion);
             setRedQuestion(randomint);
 
-            randomCollect(randomint)
+            isEnKo(randomint)
             interval = intervalset();
             setSmallTimer(5);
             smallInterval = smallIntervalset();
             setTouchBlockModal(false);
-            setCurrentPlay((rr) => rr + 1)
+            setCurrentPlay((rr) => rr + 1);
         }, setint);
     };
 
+    function isEnKo(randomint) {
+        switch (randomint) {
+            case 1:
+                if (cc1 === 'e') {
+                    randomCollect(randomint, true)
+                } else {
+                    randomCollect(randomint, false)
+                }
+                break;
+            case 2:
+                if (cc2 === 'e') {
+                    randomCollect(randomint, true)
+                } else {
+                    randomCollect(randomint, false)
+                }
+                break;
+            case 3:
+                if (cc3 === 'e') {
+                    randomCollect(randomint, true)
+                } else {
+                    randomCollect(randomint, false)
+                }
+                break;
+            case 4:
+                if (cc4 === 'e') {
+                    randomCollect(randomint, true)
+                } else {
+                    randomCollect(randomint, false)
+                }
+                break;
+            case 5:
+                if (cc5 === 'e') {
+                    randomCollect(randomint, true)
+                } else {
+                    randomCollect(randomint, false)
+                }
+                break;
+            default:
+                break;
+        }
+    }
 
-    function randomCollect(randomint) {
 
-        if (currentPlay % 2 == 0) {
-            var sortArray = shuffle(axQuestion)
-            var sortErrorArray = shuffle(axAnswer)
+    function randomCollect(randomint, isen) {
 
-            console.log('???????????????????????????????????')
-            console.log(sortArray)
+        if (!isen) {
+            var sortArray = axQuestion;
+            var sortErrorArray = shuffle(axAnswer);
 
-            setCollect0(sortArray[randomint - 1].Ko_name)
-            setCollect0_kor(sortArray[randomint - 1].En_name)
+            console.log('???????????????????????????????????');
+            console.log(sortArray);
 
-            console.log(randomint)
+            setCollect0(sortArray[randomint - 1].Ko_name);
+            setCollect0_kor(sortArray[randomint - 1].En_name);
 
-            console.log(sortArray[randomint - 1].Ko_name)
-            console.log(sortArray[randomint - 1].En_name)
+            console.log(randomint);
+
+            console.log(sortArray[randomint - 1].Ko_name);
+            console.log(sortArray[randomint - 1].En_name);
 
             var bottomArray = [sortArray[randomint - 1].En_name, sortErrorArray[0].En_name, sortErrorArray[1].En_name, sortErrorArray[2].En_name, sortErrorArray[3].En_name]
             bottomArray = shuffle(bottomArray)
 
-            setCollect1(sortArray[0].Ko_name)
-            setCollect2(sortArray[1].Ko_name)
-            setCollect3(sortArray[2].Ko_name)
-            setCollect4(sortArray[3].Ko_name)
-            setCollect5(sortArray[4].Ko_name)
 
-            setbottom_collect1(bottomArray[0])
-            setbottom_collect2(bottomArray[1])
-            setbottom_collect3(bottomArray[2])
-            setbottom_collect4(bottomArray[3])
-            setbottom_collect5(bottomArray[4])
+
+            setbottom_collect1(bottomArray[0]);
+            setbottom_collect2(bottomArray[1]);
+            setbottom_collect3(bottomArray[2]);
+            setbottom_collect4(bottomArray[3]);
+            setbottom_collect5(bottomArray[4]);
 
         } else {
-            var sortArray = shuffle(axQuestion)
+            var sortArray = axQuestion
             var sortErrorArray = shuffle(axAnswer)
 
             console.log('???????????????????????????????????')
             console.log(sortArray)
 
-            setCollect0(sortArray[randomint - 1].En_name)
-            setCollect0_kor(sortArray[randomint - 1].Ko_name)
+            setCollect0(sortArray[randomint - 1].En_name);
+            setCollect0_kor(sortArray[randomint - 1].Ko_name);
 
             var bottomArray = [sortArray[randomint - 1].Ko_name, sortErrorArray[0].Ko_name, sortErrorArray[1].Ko_name, sortErrorArray[2].Ko_name, sortErrorArray[3].Ko_name]
             bottomArray = shuffle(bottomArray)
 
-            console.log(randomint)
-            console.log(sortArray[randomint - 1].Ko_name)
-            console.log(sortArray[randomint - 1].En_name)
+            console.log(randomint);
+            console.log(sortArray[randomint - 1].Ko_name);
+            console.log(sortArray[randomint - 1].En_name);
 
-            setCollect1(sortArray[0].En_name)
-            setCollect2(sortArray[1].En_name)
-            setCollect3(sortArray[2].En_name)
-            setCollect4(sortArray[3].En_name)
-            setCollect5(sortArray[4].En_name)
-
-            setbottom_collect1(bottomArray[0])
-            setbottom_collect2(bottomArray[1])
-            setbottom_collect3(bottomArray[2])
-            setbottom_collect4(bottomArray[3])
-            setbottom_collect5(bottomArray[4])
-
+            setbottom_collect1(bottomArray[0]);
+            setbottom_collect2(bottomArray[1]);
+            setbottom_collect3(bottomArray[2]);
+            setbottom_collect4(bottomArray[3]);
+            setbottom_collect5(bottomArray[4]);
         }
     }
 
@@ -257,10 +309,51 @@ const Question = () => {
 
     function checkQuestion(collect) {
         timerStopAndGo(1002)
-        if (collect == collect0_kor) {
+        if (collect == collect0_kor || collect == collect0) {
             console.log(collect0_kor)
             console.log('정답입니다!')
             setCurrentCollect((rr) => rr + 1)
+
+            switch (redQuestion) {
+                case 1:
+                    if (cc1 == 'e') {
+                        setCc1('k')
+                    } else {
+                        setCc1('e')
+                    }
+                    break;
+                case 2:
+                    if (cc2 == 'e') {
+                        setCc2('k')
+                    } else {
+                        setCc2('e')
+                    }
+                    break;
+                case 3:
+                    if (cc3 == 'e') {
+                        setCc3('k')
+                    } else {
+                        setCc3('e')
+                    }
+                    break;
+                case 4:
+                    if (cc4 == 'e') {
+                        setCc4('k')
+                    } else {
+                        setCc4('e')
+                    }
+                    break;
+                case 5:
+                    if (cc5 == 'e') {
+                        setCc5('k')
+                    } else {
+                        setCc5('e')
+                    }
+                    break;
+                default:
+                    break;
+            }
+
         } else {
             console.log('오답입니다!')
         }
@@ -328,35 +421,33 @@ const Question = () => {
             {/* 개인정보 끝 */}
 
             {/* 십자 및 9개 문제상자 */}
-            {axAnswer !== [] &&
-                <View style={{ width: chwidth, alignItems: 'center' }}>
-                    <View>
-                        <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 1 ? 'pink' : 'white' }}>
-                            <Text>{collect1}</Text>
-                        </View>
-                    </View>
-
-                    <View style={{ flexDirection: 'row' }}>
-                        <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 2 ? 'pink' : 'white' }}>
-                            <Text>{collect2}</Text>
-                        </View>
-
-                        <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 3 ? 'pink' : 'white' }}>
-                            <Text>{collect3}</Text>
-                        </View>
-
-                        <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 4 ? 'pink' : 'white' }}>
-                            <Text>{collect4}</Text>
-                        </View>
-                    </View>
-
-                    <View>
-                        <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 5 ? 'pink' : 'white' }}>
-                            <Text>{collect5}</Text>
-                        </View>
+            <View style={{ width: chwidth, alignItems: 'center' }}>
+                <View>
+                    <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 1 ? 'pink' : 'white' }}>
+                        <Text>{cc1 === 'e' ? collect1 : collect1_kor}</Text>
                     </View>
                 </View>
-            }
+
+                <View style={{ flexDirection: 'row' }}>
+                    <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 2 ? 'pink' : 'white' }}>
+                        <Text>{cc2 === 'e' ? collect2 : collect2_kor}</Text>
+                    </View>
+
+                    <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 3 ? 'pink' : 'white' }}>
+                        <Text>{cc3 === 'e' ? collect3 : collect3_kor}</Text>
+                    </View>
+
+                    <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 4 ? 'pink' : 'white' }}>
+                        <Text>{cc4 === 'e' ? collect4 : collect4_kor}</Text>
+                    </View>
+                </View>
+
+                <View>
+                    <View style={{ borderWidth: 1, width: chwidth / 4, height: chheight / 10, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 5 ? 'pink' : 'white' }}>
+                        <Text>{cc5 === 'e' ? collect5 : collect5_kor}</Text>
+                    </View>
+                </View>
+            </View>
             {/* 문제상자 끝 */}
 
             {/* 타이머 시작 */}
