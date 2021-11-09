@@ -24,8 +24,16 @@ const Fakemain = () => {
                 <Text style={{ margin: 20, fontSize: 20 }}>코스선택</Text>
             </TouchableWithoutFeedback>
 
+            <TouchableWithoutFeedback onPress={() => { navigation.navigate('문제개수') }}>
+                <Text style={{ margin: 20, fontSize: 20 }}>문제개수</Text>
+            </TouchableWithoutFeedback>
+
             <TouchableWithoutFeedback onPress={() => { navigation.navigate('문제풀이') }}>
                 <Text style={{ margin: 20, fontSize: 20 }}>문제풀이</Text>
+            </TouchableWithoutFeedback>
+
+            <TouchableWithoutFeedback onPress={() => { navigation.navigate('문제풀이9') }}>
+                <Text style={{ margin: 20, fontSize: 20 }}>문제풀이2</Text>
             </TouchableWithoutFeedback>
 
             <TouchableWithoutFeedback onPress={() => { navigation.navigate('') }}>

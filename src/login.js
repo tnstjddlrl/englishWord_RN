@@ -16,9 +16,12 @@ import {
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { atomId } from '../atom/atom';
+import AutoHeightImage from 'react-native-auto-height-image';
 
 
 const chwidth = Dimensions.get('screen').width
+
+const loginPicture = require('../img/loginPicture.png')
 
 
 const Login = () => {
@@ -56,37 +59,48 @@ const Login = () => {
     }
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: 'rgb(11,20,100)', justifyContent: 'center' }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: 'rgb(241,241,241)', justifyContent: 'center' }}>
 
             <View style={{ width: chwidth, alignItems: 'center' }}>
-                <View style={{ width: chwidth - 40, backgroundColor: 'white', borderRadius: 10 }}>
-                    <View style={{ margin: 30, marginTop: 50 }}>
+                <View style={{ width: chwidth - 60 }}>
 
-                        <TextInput
-                            style={{ height: 50, width: chwidth - 100, borderBottomWidth: 1, borderColor: 'gray' }}
-                            placeholder={'ID'}
-                            onChangeText={setId}
-                        ></TextInput>
+                    <View style={{ marginBottom: 40, width: chwidth - 60, alignItems: 'center' }}>
 
-
-                        <TextInput
-                            style={{ height: 50, width: chwidth - 100, borderBottomWidth: 1, borderColor: 'gray' }}
-                            placeholder={'PASSWORD'}
-                            onChangeText={setPwd}
-                        ></TextInput>
-
-                        <View style={{ flexDirection: 'row', marginTop: 10 }}>
-
-                            <Text>아이디저장</Text>
+                        <View style={{ width: 90, height: 90, borderRadius: 45, backgroundColor: 'white', marginBottom: 20, alignItems: 'center', justifyContent: 'center' }}>
+                            <AutoHeightImage source={loginPicture} width={75}></AutoHeightImage>
                         </View>
 
-                        <TouchableWithoutFeedback onPress={() => { request() }}>
-                            <View style={{ width: chwidth - 100, height: 50, backgroundColor: 'skyblue', borderRadius: 10, marginTop: 20, alignItems: 'center', justifyContent: 'center' }}>
-                                <Text>로그인</Text>
-                            </View>
-                        </TouchableWithoutFeedback>
-
+                        <Text style={{ color: 'rgb(53,93,194)', fontWeight: 'bold', fontSize: 35 }}>영단어 TEST</Text>
+                        <Text>English Word Test</Text>
                     </View>
+
+                    <View style={{ backgroundColor: 'white', borderRadius: 8, elevation: 5, marginBottom: 10 }}>
+                        <TextInput
+                            style={{ height: 50, width: chwidth - 70, borderColor: 'gray', marginLeft: 10 }}
+                            placeholder={'아이디'}
+                            onChangeText={setId}
+                        ></TextInput>
+                    </View>
+
+                    <View style={{ backgroundColor: 'white', borderRadius: 8, elevation: 5, marginBottom: 10 }}>
+                        <TextInput
+                            style={{ height: 50, width: chwidth - 70, borderColor: 'gray', marginLeft: 10 }}
+                            placeholder={'비밀번호'}
+                            onChangeText={setPwd}
+                        ></TextInput>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                        {/* 체크박스  */}
+                        <Text>아이디저장</Text>
+                    </View>
+
+                    <TouchableWithoutFeedback onPress={() => { request() }}>
+                        <View style={{ width: chwidth - 60, height: 50, backgroundColor: 'rgb(53,93,194)', borderRadius: 10, marginTop: 20, alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>로그인</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+
                 </View>
             </View>
         </SafeAreaView>
