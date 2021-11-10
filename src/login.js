@@ -70,7 +70,7 @@ const Login = () => {
                             <AutoHeightImage source={loginPicture} width={75}></AutoHeightImage>
                         </View>
 
-                        <Text style={{ color: 'rgb(53,93,194)', fontWeight: 'bold', fontSize: 35 }}>영단어 TEST</Text>
+                        <Text style={{ fontFamily: 'Jua-Regular', color: 'rgb(53,93,194)', fontSize: 35 }}>영단어 TEST</Text>
                         <Text>English Word Test</Text>
                     </View>
 
@@ -92,12 +92,12 @@ const Login = () => {
 
                     <View style={{ flexDirection: 'row', marginTop: 10 }}>
                         {/* 체크박스  */}
-                        <Text>아이디저장</Text>
+                        <Text style={{ color: '#999999', fontSize: 13 }}>아이디저장</Text>
                     </View>
 
                     <TouchableWithoutFeedback onPress={() => { request() }}>
                         <View style={{ width: chwidth - 60, height: 50, backgroundColor: 'rgb(53,93,194)', borderRadius: 10, marginTop: 20, alignItems: 'center', justifyContent: 'center' }}>
-                            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>로그인</Text>
+                            <Text style={{ fontFamily: 'Jua-Regular', color: 'white', fontSize: 20 }}>로그인</Text>
                         </View>
                     </TouchableWithoutFeedback>
 

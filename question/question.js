@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 
 import { useRecoilState } from 'recoil';
-import { atomGrade, atomId } from '../atom/atom';
+import { atomAxAnswer, atomAxQuestion, atomGrade, atomId } from '../atom/atom';
 
 import { useNavigation } from '@react-navigation/core';
 import axios from 'axios';
@@ -32,6 +32,10 @@ var smallInterval;
 
 const Question = () => {
     const navigation = useNavigation()
+
+    const [isStartPlay, setIsStartPlay] = useState(false)
+
+    const [isFinish, setIsFinish] = useState(false)
 
     const [currentPlay, setCurrentPlay] = useState(0); //현재 횟수
     const [currentCollect, setCurrentCollect] = useState(0)
@@ -53,6 +57,8 @@ const Question = () => {
     const [atGrade, setAtGrade] = useRecoilState(atomGrade); //학년
     const [atId, setAtId] = useRecoilState(atomId); //아이디
 
+    const [atAxQuestion, setAtAxQuestion] = useRecoilState(atomAxQuestion)
+    const [atAxAnswer, setAtAxAnswer] = useRecoilState(atomAxAnswer)
 
     const [errorArray, setErrorArray] = useState([])
 
@@ -106,8 +112,8 @@ const Question = () => {
             console.log('리턴 : ' + res.data);
             console.log(res.data);
 
-            setAxAnswer(() => res.data.answers);
-            setAxQuestion(() => res.data.questions);
+            setAxAnswer(res.data.answers);
+            setAxQuestion(res.data.questions);
 
         });
     };
@@ -142,6 +148,8 @@ const Question = () => {
 
             interval = intervalset();
             smallInterval = smallIntervalset();
+
+            setIsStartPlay(true)
         } else {
             Alert.alert('뭔가이상함')
         }
@@ -367,7 +375,8 @@ const Question = () => {
     function calculSecons() {
         if (timer <= 0) {
             clearInterval(interval);
-            Alert.alert('시간종료!');
+            // Alert.alert('시간종료!');
+            setIsFinish(true)
             setTimer(0);
 
             clearInterval(smallInterval)
@@ -406,11 +415,10 @@ const Question = () => {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
 
-
             {/* 헤더시작 */}
             <View style={{ width: chwidth, flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 20, paddingRight: 20, padding: 10 }}>
                 <TouchableWithoutFeedback onPress={() => {
-                    startBtn_click()
+                    startBtn_click();
                 }}>
                     <AutoHeightImage source={headerIcon} width={150}></AutoHeightImage>
                 </TouchableWithoutFeedback>
@@ -427,42 +435,40 @@ const Question = () => {
             {/* 개인정보 시작 */}
             <View style={{ width: chwidth, justifyContent: 'center', alignItems: 'center', marginTop: 5 }}>
                 <View style={{ width: chwidth - 40, borderWidth: 1, borderRadius: 5, padding: 10, borderColor: '#cccccc' }}>
-                    <View style={{ flexDirection: 'row', marginBottom: 5 }}>
+                    <View style={{ flexDirection: 'row', marginBottom: 5, alignItems: 'center' }}>
                         <AutoHeightImage source={person} width={23}></AutoHeightImage>
-                        <Text style={{ marginLeft: 5, fontSize: 15, fontWeight: 'bold' }}>김세미 초5</Text>
+                        <Text style={{ marginLeft: 5, fontSize: 15, fontWeight: 'bold', color: 'black' }}>김세미 초5</Text>
                     </View>
                     <Text>진행횟수 - {currentPlay}회 / 오답률 {errorDataCalcul()}%</Text>
-
                 </View>
-
             </View>
             {/* 개인정보 끝 */}
 
             {/* 십자 및 9개 문제상자 */}
             <View style={{ width: chwidth, alignItems: 'center', marginTop: 10 }}>
-                <View>
+                <View style={{ marginBottom: 2 }}>
                     <View style={{ width: chwidth / 3.5, height: chheight / 11, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 1 ? 'rgb(94,131,222)' : 'rgb(238,248,244)', borderTopLeftRadius: 10, borderTopRightRadius: 10 }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{cc1 === 'e' ? collect1 : collect1_kor}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{cc1 === 'e' ? collect1 : collect1_kor}</Text>
                     </View>
                 </View>
 
-                <View style={{ flexDirection: 'row' }}>
-                    <View style={{ width: chwidth / 3.5, height: chheight / 11, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 2 ? 'rgb(94,131,222)' : 'rgb(238,248,244)', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{cc2 === 'e' ? collect2 : collect2_kor}</Text>
+                <View style={{ flexDirection: 'row', marginBottom: 2 }}>
+                    <View style={{ width: chwidth / 3.5, height: chheight / 11, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 2 ? 'rgb(94,131,222)' : 'rgb(238,248,244)', borderTopLeftRadius: 10, borderBottomLeftRadius: 10, marginRight: 2 }}>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{cc2 === 'e' ? collect2 : collect2_kor}</Text>
                     </View>
 
-                    <View style={{ width: chwidth / 3.5, height: chheight / 11, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 3 ? 'rgb(94,131,222)' : 'rgb(238,248,244)' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{cc3 === 'e' ? collect3 : collect3_kor}</Text>
+                    <View style={{ width: chwidth / 3.5, height: chheight / 11, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 3 ? 'rgb(94,131,222)' : 'rgb(238,248,244)', marginRight: 2 }}>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{cc3 === 'e' ? collect3 : collect3_kor}</Text>
                     </View>
 
                     <View style={{ width: chwidth / 3.5, height: chheight / 11, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 4 ? 'rgb(94,131,222)' : 'rgb(238,248,244)', borderTopRightRadius: 10, borderBottomRightRadius: 10 }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{cc4 === 'e' ? collect4 : collect4_kor}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{cc4 === 'e' ? collect4 : collect4_kor}</Text>
                     </View>
                 </View>
 
                 <View>
                     <View style={{ width: chwidth / 3.5, height: chheight / 11, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 5 ? 'rgb(94,131,222)' : 'rgb(238,248,244)', borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{cc5 === 'e' ? collect5 : collect5_kor}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{cc5 === 'e' ? collect5 : collect5_kor}</Text>
                     </View>
                 </View>
             </View>
@@ -472,51 +478,49 @@ const Question = () => {
             <View style={{ alignItems: 'center', marginTop: 20 }}>
                 <View style={{ width: chwidth - 40, height: 50, alignItems: 'center' }}>
                     <Text style={{ color: 'red', fontWeight: 'bold' }}>타이머 {`${parseInt((timer % 3600) / 60)}:${secon} / ${Math.floor(smallTimer)}`}</Text>
-
                 </View>
             </View>
-
 
             {/* 정답상자 시작 */}
             <View style={{ alignItems: 'center', marginTop: 5, flex: 1, }}>
                 <TouchableWithoutFeedback onPress={() => {
                     console.log(bottom_collect1);
-                    checkQuestion(bottom_collect1)
+                    checkQuestion(bottom_collect1);
                 }}>
                     <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{bottom_collect1}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect1}</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
                     console.log(bottom_collect2);
-                    checkQuestion(bottom_collect2)
+                    checkQuestion(bottom_collect2);
                 }}>
                     <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{bottom_collect2}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect2}</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
                     console.log(bottom_collect3);
-                    checkQuestion(bottom_collect3)
+                    checkQuestion(bottom_collect3);
                 }}>
                     <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{bottom_collect3}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect3}</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
                     console.log(bottom_collect4);
-                    checkQuestion(bottom_collect4)
+                    checkQuestion(bottom_collect4);
                 }}>
                     <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{bottom_collect4}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect4}</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
                     console.log(bottom_collect5);
-                    checkQuestion(bottom_collect5)
+                    checkQuestion(bottom_collect5);
                 }}>
                     <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{bottom_collect5}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect5}</Text>
                     </View>
                 </TouchableWithoutFeedback>
             </View>
@@ -527,6 +531,51 @@ const Question = () => {
                 <SafeAreaView style={{ flex: 1, backgroundColor: 'rgba(128,128,128,0.5)' }}>
                 </SafeAreaView>
             </Modal>
+
+            <Modal visible={isFinish} transparent={true}>
+                <SafeAreaView style={{ flex: 1, backgroundColor: 'rgba(128,128,128,0.5)', alignItems: 'center', justifyContent: 'center' }}>
+                    <View style={{ width: '60%', borderTopLeftRadius: 10, borderTopRightRadius: 10, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', padding: 25 }}>
+                        <Text style={{ fontFamily: 'Jua-Regular' }}>총 문제</Text>
+                        <View style={{ flexDirection: 'row', marginTop: 20 }}>
+                            <Text style={{ fontFamily: 'Jua-Regular', fontSize: 20, letterSpacing: -1, color: 'black', marginRight: 15 }}>정답횟수</Text>
+                            <Text style={{ fontFamily: 'Jua-Regular', fontSize: 20, letterSpacing: -1, color: '#ff6600' }}>25</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                            <Text style={{ fontFamily: 'Jua-Regular', fontSize: 20, letterSpacing: -1, color: 'black', marginRight: 15 }}>오답률</Text>
+                            <Text style={{ fontFamily: 'Jua-Regular', fontSize: 20, letterSpacing: -1, color: '#ff6600' }}>25%</Text>
+                        </View>
+                    </View>
+
+                    <TouchableWithoutFeedback onPress={() => {
+                        setAtAxAnswer(axAnswer);
+                        setAtAxQuestion(axQuestion);
+                        navigation.navigate('최종풀이')
+                        setIsFinish(false)
+
+                    }}>
+                        <View style={{ width: '60%', height: 50, borderBottomLeftRadius: 10, borderBottomRightRadius: 10, backgroundColor: 'rgb(94,131,222)', marginBottom: 10, alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Jua-Regular' }}>문제풀러가기</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+
+                </SafeAreaView>
+            </Modal>
+
+            {/* <Modal visible={false} transparent={true}>
+                <SafeAreaView style={{ flex: 1, backgroundColor: 'rgba(128,128,128,0.5)', alignItems: 'center', justifyContent: 'center' }}>
+                    <View style={{ width: '60%', height: 120, borderRadius: 10, backgroundColor: 'white', marginBottom: 10, alignItems: 'center', justifyContent: 'center' }}>
+
+                    </View>
+
+                    <View style={{ width: '60%', height: 50, borderRadius: 10, backgroundColor: 'blue', marginBottom: 10, alignItems: 'center', justifyContent: 'center' }}>
+                        <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Jua-Regular' }}>같은 단어 암기</Text>
+                    </View>
+
+                    <View style={{ width: '60%', height: 50, borderRadius: 10, backgroundColor: 'orange', alignItems: 'center', justifyContent: 'center' }}>
+                        <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Jua-Regular' }}>다른 단어 암기</Text>
+                    </View>
+                </SafeAreaView>
+            </Modal> */}
 
 
         </SafeAreaView>

@@ -36,7 +36,7 @@ const Fakemain = () => {
                 <Text style={{ margin: 20, fontSize: 20 }}>문제풀이2</Text>
             </TouchableWithoutFeedback>
 
-            <TouchableWithoutFeedback onPress={() => { navigation.navigate('') }}>
+            <TouchableWithoutFeedback onPress={() => { navigation.navigate('최종풀이') }}>
                 <Text style={{ margin: 20, fontSize: 20 }}>최종테스트</Text>
             </TouchableWithoutFeedback>
         </SafeAreaView>

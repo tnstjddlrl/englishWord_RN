@@ -39,12 +39,12 @@ const QuestionChoice = () => {
 
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 
-                <Text style={{ marginTop: -50, fontWeight: 'bold', fontSize: 20, letterSpacing: -1.5 }}>초등학교 3학년</Text>
+                <Text style={{ marginTop: -50, fontSize: 25, letterSpacing: -1.5, fontFamily: 'Jua-Regular', color: 'black' }}>초등학교 3학년</Text>
 
                 <View style={{ width: chwidth - 40, backgroundColor: 'rgb(242,242,242)', borderRadius: 10, marginTop: 50, alignItems: 'center' }}>
 
                     <View style={{ marginBottom: 20, flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 15, letterSpacing: -1, marginRight: 15 }}>단어갯수</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 15, letterSpacing: -1, marginRight: 15, color: 'black' }}>단어갯수</Text>
 
                         <SelectDropdown
                             data={countries}
@@ -69,7 +69,7 @@ const QuestionChoice = () => {
                                 borderColor: 'black',
                             }}
 
-                            buttonTextStyle={{ textAlign: "left", fontSize: 15, color: 'black' }}
+                            buttonTextStyle={{ textAlign: "left", fontSize: 15, color: 'black', marginLeft: 0 }}
 
                             renderDropdownIcon={() => {
                                 return (
@@ -86,7 +86,7 @@ const QuestionChoice = () => {
                         }
                     }}>
                         <View style={{ width: chwidth - 80, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(53,93,194)' }}>
-                            <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'white', margin: 10 }}>시작</Text>
+                            <Text style={{ fontSize: 20, color: 'white', margin: 13, fontFamily: 'Jua-Regular' }}>시작</Text>
                         </View>
                     </TouchableWithoutFeedback>
 

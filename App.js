@@ -11,6 +11,7 @@ import Question from './question/question';
 import { RecoilRoot } from 'recoil';
 import Question9 from './question/question9';
 import QuestionChoice from './question/questionChoice';
+import FinalQuestion from './question/finalQuestion';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +36,7 @@ const App = () => {
           <Stack.Screen name="문제개수" component={QuestionChoice} />
           <Stack.Screen name="문제풀이" component={Question} />
           <Stack.Screen name="문제풀이9" component={Question9} />
+          <Stack.Screen name="최종풀이" component={FinalQuestion} />
 
 
         </Stack.Navigator>

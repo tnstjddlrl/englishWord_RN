@@ -2,3 +2,6 @@
 
 const [atId, setAtId] = useRecoilState(atomId); //아이디
 const [atGrade,setAtGrade] = useRecoilState(atomGrade); //학년
+
+const [atAxQuestion,setAtAxQuestion] =useRecoilState(atomAxQuestion) 
+const [atAxAnswer,setAtAxAnswer] =useRecoilState(atomAxAnswer)      //문제풀이에서 최종풀이로 넘어갈때 남겨두는 배열

@@ -51,6 +51,9 @@ const Question9 = () => {
     const [atGrade, setAtGrade] = useRecoilState(atomGrade); //학년
     const [atId, setAtId] = useRecoilState(atomId); //아이디
 
+    const [atAxQuestion, setAtAxQuestion] = useRecoilState(atomAxQuestion)
+    const [atAxAnswer, setAtAxAnswer] = useRecoilState(atomAxAnswer)   //넘어가기용 배열
+
     const [errorArray, setErrorArray] = useState([])
 
     const [questionList, setQuscionList] = useState([])
@@ -113,6 +116,9 @@ const Question9 = () => {
 
             setAxAnswer(() => res.data.answers);
             setAxQuestion(() => res.data.questions);
+
+            setAtAxAnswer(res.data.answers);
+            setAtAxQuestion(res.data.questions);
 
         });
     };
@@ -510,44 +516,44 @@ const Question9 = () => {
             <View style={{ width: chwidth, alignItems: 'center', marginTop: 10 }}>
                 <View style={{ flexDirection: 'row', marginBottom: 2 }}>
                     <View style={{ width: chwidth / 3.5, height: chheight / 11, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 1 ? 'rgb(94,131,222)' : 'rgb(238,248,244)', borderTopLeftRadius: 10, marginRight: 2 }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{cc1 === 'e' ? collect1 : collect1_kor}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{cc1 === 'e' ? collect1 : collect1_kor}</Text>
                     </View>
 
                     <View style={{ width: chwidth / 3.5, height: chheight / 11, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 2 ? 'rgb(94,131,222)' : 'rgb(238,248,244)', marginRight: 2 }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{cc2 === 'e' ? collect2 : collect2_kor}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{cc2 === 'e' ? collect2 : collect2_kor}</Text>
                     </View>
 
                     <View style={{ width: chwidth / 3.5, height: chheight / 11, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 3 ? 'rgb(94,131,222)' : 'rgb(238,248,244)', borderTopRightRadius: 10 }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{cc3 === 'e' ? collect3 : collect3_kor}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{cc3 === 'e' ? collect3 : collect3_kor}</Text>
                     </View>
                 </View>
 
                 <View style={{ flexDirection: 'row', marginBottom: 2 }}>
 
                     <View style={{ width: chwidth / 3.5, height: chheight / 11, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 4 ? 'rgb(94,131,222)' : 'rgb(238,248,244)', marginRight: 2 }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{cc4 === 'e' ? collect4 : collect4_kor}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{cc4 === 'e' ? collect4 : collect4_kor}</Text>
                     </View>
                     <View style={{ width: chwidth / 3.5, height: chheight / 11, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 5 ? 'rgb(94,131,222)' : 'rgb(238,248,244)', marginRight: 2 }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{cc5 === 'e' ? collect5 : collect5_kor}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{cc5 === 'e' ? collect5 : collect5_kor}</Text>
                     </View>
 
                     <View style={{ width: chwidth / 3.5, height: chheight / 11, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 6 ? 'rgb(94,131,222)' : 'rgb(238,248,244)' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{cc6 === 'e' ? collect6 : collect6_kor}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{cc6 === 'e' ? collect6 : collect6_kor}</Text>
                     </View>
 
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
                     <View style={{ width: chwidth / 3.5, height: chheight / 11, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 7 ? 'rgb(94,131,222)' : 'rgb(238,248,244)', borderBottomLeftRadius: 10, marginRight: 2 }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{cc7 === 'e' ? collect7 : collect7_kor}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{cc7 === 'e' ? collect7 : collect7_kor}</Text>
                     </View>
 
                     <View style={{ width: chwidth / 3.5, height: chheight / 11, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 8 ? 'rgb(94,131,222)' : 'rgb(238,248,244)', marginRight: 2 }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{cc8 === 'e' ? collect8 : collect8_kor}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{cc8 === 'e' ? collect8 : collect8_kor}</Text>
                     </View>
 
                     <View style={{ width: chwidth / 3.5, height: chheight / 11, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 9 ? 'rgb(94,131,222)' : 'rgb(238,248,244)', borderBottomRightRadius: 10 }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{cc9 === 'e' ? collect9 : collect9_kor}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{cc9 === 'e' ? collect9 : collect9_kor}</Text>
                     </View>
                 </View>
             </View>
@@ -569,7 +575,7 @@ const Question9 = () => {
                     checkQuestion(bottom_collect1)
                 }}>
                     <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{bottom_collect1}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect1}</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
@@ -577,7 +583,7 @@ const Question9 = () => {
                     checkQuestion(bottom_collect2)
                 }}>
                     <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{bottom_collect2}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect2}</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
@@ -585,7 +591,7 @@ const Question9 = () => {
                     checkQuestion(bottom_collect3)
                 }}>
                     <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{bottom_collect3}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect3}</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
@@ -593,7 +599,7 @@ const Question9 = () => {
                     checkQuestion(bottom_collect4)
                 }}>
                     <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{bottom_collect4}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect4}</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
@@ -601,7 +607,7 @@ const Question9 = () => {
                     checkQuestion(bottom_collect5)
                 }}>
                     <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{bottom_collect5}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect5}</Text>
                     </View>
                 </TouchableWithoutFeedback>
             </View>
