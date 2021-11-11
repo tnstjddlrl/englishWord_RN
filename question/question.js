@@ -57,6 +57,9 @@ const Question = () => {
     const [atGrade, setAtGrade] = useRecoilState(atomGrade); //학년
     const [atId, setAtId] = useRecoilState(atomId); //아이디
 
+    const [userName, setUserName] = useState('')
+    const [userGrade, setUserGrade] = useState('')
+
     const [atAxQuestion, setAtAxQuestion] = useRecoilState(atomAxQuestion)
     const [atAxAnswer, setAtAxAnswer] = useRecoilState(atomAxAnswer)
 
@@ -117,6 +120,23 @@ const Question = () => {
 
         });
     };
+
+    const userInform = async () => {
+        await axios.get('https://hjong0108.cafe24.com/bbs/post.php', {
+            params: {
+                type: 'information',
+                id: 'test', //atId
+            },
+        }).catch((err) => {
+            console.log(err)
+        }).then((res) => {
+            console.log('리턴 : ' + res.data);
+            console.log(res.data);
+            var rr = res.data
+            setUserName(rr.split('/')[0])
+            setUserGrade(rr.split('/')[1])
+        });
+    };
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             // do something
@@ -127,6 +147,7 @@ const Question = () => {
     }, [navigation]);
 
     useEffect(() => {
+        userInform()
     }, []);
 
     useEffect(() => {
@@ -437,7 +458,7 @@ const Question = () => {
                 <View style={{ width: chwidth - 40, borderWidth: 1, borderRadius: 5, padding: 10, borderColor: '#cccccc' }}>
                     <View style={{ flexDirection: 'row', marginBottom: 5, alignItems: 'center' }}>
                         <AutoHeightImage source={person} width={23}></AutoHeightImage>
-                        <Text style={{ marginLeft: 5, fontSize: 15, fontWeight: 'bold', color: 'black' }}>김세미 초5</Text>
+                        <Text style={{ marginLeft: 5, fontSize: 15, fontWeight: 'bold', color: 'black' }}>{userName} {userGrade}</Text>
                     </View>
                     <Text>진행횟수 - {currentPlay}회 / 오답률 {errorDataCalcul()}%</Text>
                 </View>
@@ -475,14 +496,14 @@ const Question = () => {
             {/* 문제상자 끝 */}
 
             {/* 타이머 시작 */}
-            <View style={{ alignItems: 'center', marginTop: 20 }}>
+            <View style={{ alignItems: 'center', marginTop: 20, marginBottom: 10 }}>
                 {isStartPlay ?
                     <View style={{ width: chwidth - 40, height: 50, alignItems: 'center' }}>
                         <Text style={{ color: 'red', fontWeight: 'bold' }}>타이머 {`${parseInt((timer % 3600) / 60)}:${secon} / ${Math.floor(smallTimer)}`}</Text>
                     </View>
                     :
                     <TouchableWithoutFeedback onPress={() => { startBtn_click() }}>
-                        <View style={{ width: 200, padding: 10, borderRadius: 20, backgroundColor: 'rgb(94,131,222)', alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{ width: 200, padding: 10, borderRadius: 20, backgroundColor: 'rgb(94,131,222)', alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
                             <Text style={{ color: 'white', fontFamily: 'Jua-Regular', fontSize: 20 }}>시작</Text>
                         </View>
                     </TouchableWithoutFeedback>
@@ -493,40 +514,64 @@ const Question = () => {
             {/* 정답상자 시작 */}
             <View style={{ alignItems: 'center', marginTop: 5, flex: 1, }}>
                 <TouchableWithoutFeedback onPress={() => {
-                    console.log(bottom_collect1);
-                    checkQuestion(bottom_collect1);
+                    if (isStartPlay) {
+                        console.log(bottom_collect1);
+                        checkQuestion(bottom_collect1);
+                    } else {
+                        Alert.alert('먼저 시작버튼을 눌러주세요!')
+                    }
                 }}>
                     <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
                         <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect1}</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
-                    console.log(bottom_collect2);
-                    checkQuestion(bottom_collect2);
+
+                    if (isStartPlay) {
+                        console.log(bottom_collect2);
+                        checkQuestion(bottom_collect2);
+                    } else {
+                        Alert.alert('먼저 시작버튼을 눌러주세요!')
+                    }
                 }}>
                     <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
                         <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect2}</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
-                    console.log(bottom_collect3);
-                    checkQuestion(bottom_collect3);
+
+                    if (isStartPlay) {
+                        console.log(bottom_collect3);
+                        checkQuestion(bottom_collect3);
+                    } else {
+                        Alert.alert('먼저 시작버튼을 눌러주세요!')
+                    }
                 }}>
                     <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
                         <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect3}</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
-                    console.log(bottom_collect4);
-                    checkQuestion(bottom_collect4);
+
+                    if (isStartPlay) {
+                        console.log(bottom_collect4);
+                        checkQuestion(bottom_collect4);
+                    } else {
+                        Alert.alert('먼저 시작버튼을 눌러주세요!')
+                    }
                 }}>
                     <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
                         <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect4}</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
-                    console.log(bottom_collect5);
-                    checkQuestion(bottom_collect5);
+
+                    if (isStartPlay) {
+                        console.log(bottom_collect5);
+                        checkQuestion(bottom_collect5);
+                    } else {
+                        Alert.alert('먼저 시작버튼을 눌러주세요!')
+                    }
                 }}>
                     <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
                         <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect5}</Text>

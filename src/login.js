@@ -80,7 +80,7 @@ const Login = () => {
                     storeId(id)
                 }
                 setTimeout(() => {
-                    navigation.navigate('실제 메인')
+                    navigation.navigate('코스선택')
                 }, 100);
             }
 

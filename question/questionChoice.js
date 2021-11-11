@@ -17,6 +17,8 @@ import {
 import AutoHeightImage from 'react-native-auto-height-image';
 
 import SelectDropdown from 'react-native-select-dropdown'
+import { useRecoilState } from 'recoil';
+import { atomGrade } from '../atom/atom';
 
 const headerIcon = require('../img/headerIcon.png')
 
@@ -31,6 +33,9 @@ const QuestionChoice = () => {
     const navigation = useNavigation()
     const [cnt, setCnt] = useState('')
 
+    const [atGrade, setAtGrade] = useRecoilState(atomGrade); //학년
+
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={{ width: '100%', }}>
@@ -39,9 +44,9 @@ const QuestionChoice = () => {
 
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 
-                <Text style={{ marginTop: -50, fontSize: 25, letterSpacing: -1.5, fontFamily: 'Jua-Regular', color: 'black' }}>초등학교 3학년</Text>
+                <Text style={{ marginTop: -50, fontSize: 25, letterSpacing: -1.5, fontFamily: 'Jua-Regular', color: 'black' }}>{atGrade}</Text>
 
-                <View style={{ width: chwidth - 40, backgroundColor: 'rgb(242,242,242)', borderRadius: 10, marginTop: 50, alignItems: 'center' }}>
+                <View style={{ width: chwidth - 40, backgroundColor: 'rgb(230,230,230)', borderRadius: 10, marginTop: 30, alignItems: 'center', padding: 40 }}>
 
                     <View style={{ marginBottom: 20, flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={{ fontWeight: 'bold', fontSize: 15, letterSpacing: -1, marginRight: 15, color: 'black' }}>단어갯수</Text>

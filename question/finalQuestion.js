@@ -28,6 +28,7 @@ const headerIcon = require('../img/headerIcon.png');
 const pencil = require('../img/pencil.png');
 
 var current = 1
+var finalResultArray = []
 
 const FinalQuestion = () => {
     const navigation = useNavigation()
@@ -71,9 +72,14 @@ const FinalQuestion = () => {
     function checkCollect(cc) {
         if (cc === collect0 || cc === collect0_kor) {
             console.log('맞음');
+            finalResultArray.push({ En_name: collect0, collect: 'y' })
+
             setCollectCount((rr) => rr + 1)
+
+
         } else {
             console.log('틀림');
+            finalResultArray.push({ En_name: collect0, collect: 'n' })
             setFailCount((rr) => rr + 1)
         }
 
@@ -88,7 +94,55 @@ const FinalQuestion = () => {
             // Alert.alert('끝!')
             current = 1
             setFinalModal(true)
+
+            console.log(finalResultArray)
         }
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
+    const request = async () => {
+        console.log(id + pwd)
+        await axios.get('https://hjong0108.cafe24.com/bbs/post.php', {
+            params: {
+                type: 'word_save',
+                grade: '고등학교1학년',//atGrade,
+                save_word: axQuestion
+            },
+        }).catch((err) => {
+            console.log(err)
+        }).then(async (res) => {
+            console.log(res)
+            console.log('리턴 : ' + res.data)
+        })
+    }
+
+    const request2 = async () => {
+        console.log(id + pwd)
+        await axios.get('https://hjong0108.cafe24.com/bbs/post.php', {
+            params: {
+                type: 'suc_word',
+                grade: '고등학교1학년',//atGrade,
+                save_word: finalResultArray
+            },
+        }).catch((err) => {
+            console.log(err)
+        }).then(async (res) => {
+            console.log(res)
+            console.log('리턴 : ' + res.data)
+
+            finalResultArray = []
+        })
+    }
+
+    function saveWord(params) {
+        request().then(() => {
+
+        })
+    }
+
+    function anotherWord() {
+        finalResultArray = []
+
     }
 
 
@@ -110,8 +164,8 @@ const FinalQuestion = () => {
             console.log('???????????????????????????????????');
             console.log(sortArray);
 
-            setCollect0(sortArray[randomint - 1].Ko_name);
-            setCollect0_kor(sortArray[randomint - 1].En_name);
+            setCollect0(sortArray[randomint - 1].En_name);
+            setCollect0_kor(sortArray[randomint - 1].Ko_name);
             setTopWord(sortArray[randomint - 1].Ko_name)
 
             console.log(randomint);
@@ -156,6 +210,9 @@ const FinalQuestion = () => {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -280,6 +337,7 @@ const FinalQuestion = () => {
                     <TouchableWithoutFeedback onPress={() => {
                         console.log('zzz');
                         navigation.navigate('문제개수')
+                        anotherWord()
                     }}>
                         <View style={{ width: '60%', height: 50, borderRadius: 8, backgroundColor: 'rgb(53,93,194)', alignItems: 'center', justifyContent: 'center' }}>
                             <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Jua-Regular' }}>다른 단어 암기</Text>
