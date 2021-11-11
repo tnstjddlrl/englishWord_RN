@@ -42,7 +42,7 @@ const Question = () => {
 
     const [arriveFirst, setArriveFirst] = useState(true)
 
-    const [timer, setTimer] = useState(300);
+    const [timer, setTimer] = useState(5);
     const [secon, setSecon] = useState('00');
 
     const [smallTimer, setSmallTimer] = useState(5);
@@ -476,9 +476,18 @@ const Question = () => {
 
             {/* 타이머 시작 */}
             <View style={{ alignItems: 'center', marginTop: 20 }}>
-                <View style={{ width: chwidth - 40, height: 50, alignItems: 'center' }}>
-                    <Text style={{ color: 'red', fontWeight: 'bold' }}>타이머 {`${parseInt((timer % 3600) / 60)}:${secon} / ${Math.floor(smallTimer)}`}</Text>
-                </View>
+                {isStartPlay ?
+                    <View style={{ width: chwidth - 40, height: 50, alignItems: 'center' }}>
+                        <Text style={{ color: 'red', fontWeight: 'bold' }}>타이머 {`${parseInt((timer % 3600) / 60)}:${secon} / ${Math.floor(smallTimer)}`}</Text>
+                    </View>
+                    :
+                    <TouchableWithoutFeedback onPress={() => { startBtn_click() }}>
+                        <View style={{ width: 200, padding: 10, borderRadius: 20, backgroundColor: 'rgb(94,131,222)', alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={{ color: 'white', fontFamily: 'Jua-Regular', fontSize: 20 }}>시작</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                }
+
             </View>
 
             {/* 정답상자 시작 */}
@@ -538,11 +547,11 @@ const Question = () => {
                         <Text style={{ fontFamily: 'Jua-Regular' }}>총 문제</Text>
                         <View style={{ flexDirection: 'row', marginTop: 20 }}>
                             <Text style={{ fontFamily: 'Jua-Regular', fontSize: 20, letterSpacing: -1, color: 'black', marginRight: 15 }}>정답횟수</Text>
-                            <Text style={{ fontFamily: 'Jua-Regular', fontSize: 20, letterSpacing: -1, color: '#ff6600' }}>25</Text>
+                            <Text style={{ fontFamily: 'Jua-Regular', fontSize: 20, letterSpacing: -1, color: '#ff6600' }}>{currentCollect}</Text>
                         </View>
                         <View style={{ flexDirection: 'row', marginTop: 10 }}>
                             <Text style={{ fontFamily: 'Jua-Regular', fontSize: 20, letterSpacing: -1, color: 'black', marginRight: 15 }}>오답률</Text>
-                            <Text style={{ fontFamily: 'Jua-Regular', fontSize: 20, letterSpacing: -1, color: '#ff6600' }}>25%</Text>
+                            <Text style={{ fontFamily: 'Jua-Regular', fontSize: 20, letterSpacing: -1, color: '#ff6600' }}>{errorDataCalcul()}%</Text>
                         </View>
                     </View>
 
@@ -561,21 +570,7 @@ const Question = () => {
                 </SafeAreaView>
             </Modal>
 
-            {/* <Modal visible={false} transparent={true}>
-                <SafeAreaView style={{ flex: 1, backgroundColor: 'rgba(128,128,128,0.5)', alignItems: 'center', justifyContent: 'center' }}>
-                    <View style={{ width: '60%', height: 120, borderRadius: 10, backgroundColor: 'white', marginBottom: 10, alignItems: 'center', justifyContent: 'center' }}>
 
-                    </View>
-
-                    <View style={{ width: '60%', height: 50, borderRadius: 10, backgroundColor: 'blue', marginBottom: 10, alignItems: 'center', justifyContent: 'center' }}>
-                        <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Jua-Regular' }}>같은 단어 암기</Text>
-                    </View>
-
-                    <View style={{ width: '60%', height: 50, borderRadius: 10, backgroundColor: 'orange', alignItems: 'center', justifyContent: 'center' }}>
-                        <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Jua-Regular' }}>다른 단어 암기</Text>
-                    </View>
-                </SafeAreaView>
-            </Modal> */}
 
 
         </SafeAreaView>

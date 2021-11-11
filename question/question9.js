@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 
 import { useRecoilState } from 'recoil';
-import { atomGrade, atomId } from '../atom/atom';
+import { atomAxAnswer, atomAxQuestion, atomGrade, atomId } from '../atom/atom';
 
 import { useNavigation } from '@react-navigation/core';
 import axios from 'axios';
@@ -33,12 +33,16 @@ var smallInterval;
 const Question9 = () => {
     const navigation = useNavigation()
 
+    const [isFinish, setIsFinish] = useState(false)
+    const [isStartPlay, setIsStartPlay] = useState(false)
+
+
     const [currentPlay, setCurrentPlay] = useState(0); //현재 횟수
     const [currentCollect, setCurrentCollect] = useState(0)
 
     const [arriveFirst, setArriveFirst] = useState(true)
 
-    const [timer, setTimer] = useState(300);
+    const [timer, setTimer] = useState(5);
     const [secon, setSecon] = useState('00');
 
     const [smallTimer, setSmallTimer] = useState(5);
@@ -117,9 +121,6 @@ const Question9 = () => {
             setAxAnswer(() => res.data.answers);
             setAxQuestion(() => res.data.questions);
 
-            setAtAxAnswer(res.data.answers);
-            setAtAxQuestion(res.data.questions);
-
         });
     };
     useEffect(() => {
@@ -149,6 +150,7 @@ const Question9 = () => {
             setArriveFirst(false);
             setUp()
             isEnKo(redQuestion);
+            setIsStartPlay(true)
 
             interval = intervalset();
             smallInterval = smallIntervalset();
@@ -441,7 +443,8 @@ const Question9 = () => {
     function calculSecons() {
         if (timer <= 0) {
             clearInterval(interval);
-            Alert.alert('시간종료!');
+            // Alert.alert('시간종료!');
+            setIsFinish(true)
             setTimer(0);
 
             clearInterval(smallInterval)
@@ -561,10 +564,17 @@ const Question9 = () => {
 
             {/* 타이머 시작 */}
             <View style={{ alignItems: 'center', marginTop: 20 }}>
-                <View style={{ width: chwidth - 40, height: 50, alignItems: 'center' }}>
-                    <Text style={{ color: 'red', fontWeight: 'bold' }}>타이머 {`${parseInt((timer % 3600) / 60)}:${secon} / ${Math.floor(smallTimer)}`}</Text>
-
-                </View>
+                {isStartPlay ?
+                    <View style={{ width: chwidth - 40, height: 50, alignItems: 'center' }}>
+                        <Text style={{ color: 'red', fontWeight: 'bold' }}>타이머 {`${parseInt((timer % 3600) / 60)}:${secon} / ${Math.floor(smallTimer)}`}</Text>
+                    </View>
+                    :
+                    <TouchableWithoutFeedback onPress={() => { startBtn_click() }}>
+                        <View style={{ width: 200, padding: 10, borderRadius: 20, backgroundColor: 'rgb(94,131,222)', alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={{ color: 'white', fontFamily: 'Jua-Regular', fontSize: 20 }}>시작</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                }
             </View>
 
 
@@ -616,6 +626,35 @@ const Question9 = () => {
 
             <Modal visible={touchBlockModal} transparent={true}>
                 <SafeAreaView style={{ flex: 1, backgroundColor: 'rgba(128,128,128,0.5)' }}>
+                </SafeAreaView>
+            </Modal>
+
+            <Modal visible={isFinish} transparent={true}>
+                <SafeAreaView style={{ flex: 1, backgroundColor: 'rgba(128,128,128,0.5)', alignItems: 'center', justifyContent: 'center' }}>
+                    <View style={{ width: '60%', borderTopLeftRadius: 10, borderTopRightRadius: 10, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', padding: 25 }}>
+                        <Text style={{ fontFamily: 'Jua-Regular' }}>총 문제</Text>
+                        <View style={{ flexDirection: 'row', marginTop: 20 }}>
+                            <Text style={{ fontFamily: 'Jua-Regular', fontSize: 20, letterSpacing: -1, color: 'black', marginRight: 15 }}>정답횟수</Text>
+                            <Text style={{ fontFamily: 'Jua-Regular', fontSize: 20, letterSpacing: -1, color: '#ff6600' }}>{currentCollect}</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                            <Text style={{ fontFamily: 'Jua-Regular', fontSize: 20, letterSpacing: -1, color: 'black', marginRight: 15 }}>오답률</Text>
+                            <Text style={{ fontFamily: 'Jua-Regular', fontSize: 20, letterSpacing: -1, color: '#ff6600' }}>{errorDataCalcul()}%</Text>
+                        </View>
+                    </View>
+
+                    <TouchableWithoutFeedback onPress={() => {
+                        setAtAxAnswer(axAnswer);
+                        setAtAxQuestion(axQuestion);
+                        navigation.navigate('최종풀이')
+                        setIsFinish(false)
+
+                    }}>
+                        <View style={{ width: '60%', height: 50, borderBottomLeftRadius: 10, borderBottomRightRadius: 10, backgroundColor: 'rgb(94,131,222)', marginBottom: 10, alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Jua-Regular' }}>문제풀러가기</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+
                 </SafeAreaView>
             </Modal>
 

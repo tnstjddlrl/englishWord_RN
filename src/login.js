@@ -17,17 +17,45 @@ import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { atomId } from '../atom/atom';
 import AutoHeightImage from 'react-native-auto-height-image';
+import BouncyCheckbox from "react-native-bouncy-checkbox";
+import { useNavigation } from '@react-navigation/core';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const chwidth = Dimensions.get('screen').width
 
 const loginPicture = require('../img/loginPicture.png')
 
+const storeId = async (value) => {
+    try {
+        await AsyncStorage.setItem('@user_id', value)
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+const getAsyncId = async () => {
+    try {
+        const value = await AsyncStorage.getItem('@user_id')
+        if (value !== null) {
+            return value
+        } else {
+            return null;
+        }
+    } catch (e) {
+        console.log(e)
+    }
+}
+
 
 const Login = () => {
+    const navigation = useNavigation()
 
     const [id, setId] = useState('')
+
     const [pwd, setPwd] = useState('')
+
+    const [loginSave, setLoginSave] = useState(false)
 
     const [atId, setAtId] = useRecoilState(atomId)
 
@@ -48,15 +76,17 @@ const Login = () => {
                 Alert.alert('아이디 혹은 비밀번호 오류입니다!')
             } else if (res.data == 'login_suc') {
                 setAtId(id)
-                Alert.alert('로그인 성공')
-
-                // setTimeout(() => {
-                //     navigation.navigate('실제 메인')
-                // }, 300);
+                if (loginSave) {
+                    storeId(id)
+                }
+                setTimeout(() => {
+                    navigation.navigate('실제 메인')
+                }, 100);
             }
 
         })
     }
+
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'rgb(241,241,241)', justifyContent: 'center' }}>
@@ -90,9 +120,17 @@ const Login = () => {
                         ></TextInput>
                     </View>
 
-                    <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                        {/* 체크박스  */}
-                        <Text style={{ color: '#999999', fontSize: 13 }}>아이디저장</Text>
+                    <View style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center' }}>
+                        <BouncyCheckbox
+                            size={25}
+                            fillColor="blue"
+                            unfillColor="white"
+                            disableText={true}
+                            iconStyle={{ borderColor: "black" }}
+                            textStyle={{ fontFamily: "JosefinSans-Regular" }}
+                            onPress={(ischeck) => { setLoginSave(ischeck) }}
+                        />
+                        <Text style={{ color: '#999999', fontSize: 13, marginLeft: 10 }}>아이디저장</Text>
                     </View>
 
                     <TouchableWithoutFeedback onPress={() => { request() }}>

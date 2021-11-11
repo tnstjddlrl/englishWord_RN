@@ -12,6 +12,7 @@ import { RecoilRoot } from 'recoil';
 import Question9 from './question/question9';
 import QuestionChoice from './question/questionChoice';
 import FinalQuestion from './question/finalQuestion';
+import Loading from './src/loading';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,9 +29,10 @@ const App = () => {
 
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }} >
-          <Stack.Screen name="가짜메인" component={Fakemain} />
+          <Stack.Screen name="로딩" component={Loading} />
 
           <Stack.Screen name="로그인" component={Login} />
+          <Stack.Screen name="가짜메인" component={Fakemain} />
 
           <Stack.Screen name="코스선택" component={CourseChoice} />
           <Stack.Screen name="문제개수" component={QuestionChoice} />

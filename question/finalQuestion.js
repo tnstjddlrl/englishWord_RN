@@ -15,6 +15,10 @@ import {
 } from 'react-native';
 
 import AutoHeightImage from 'react-native-auto-height-image';
+import { useRecoilState } from 'recoil';
+
+
+import { atomAxAnswer, atomAxQuestion, atomGrade, atomId } from '../atom/atom';
 
 const chwidth = Dimensions.get('screen').width;
 const chheight = Dimensions.get('screen').height;
@@ -23,8 +27,135 @@ const chheight = Dimensions.get('screen').height;
 const headerIcon = require('../img/headerIcon.png');
 const pencil = require('../img/pencil.png');
 
+var current = 1
+
 const FinalQuestion = () => {
     const navigation = useNavigation()
+
+    const [isStartPlay, setIsStartPlay] = useState(false)
+
+    // const [current, setCurrent] = useState(1)
+    const [collectCount, setCollectCount] = useState(0)
+    const [failCount, setFailCount] = useState(0)
+
+    const [atGrade, setAtGrade] = useRecoilState(atomGrade); //학년
+    const [atId, setAtId] = useRecoilState(atomId); //아이디
+
+    const [finalModal, setFinalModal] = useState(false)
+
+    const [atAxQuestion, setAtAxQuestion] = useRecoilState(atomAxQuestion)
+    const [atAxAnswer, setAtAxAnswer] = useRecoilState(atomAxAnswer)
+
+    const [axQuestion, setAxQuestion] = useState([])
+    const [axAnswer, setAxAnswer] = useState([])
+
+
+    const [collect0, setCollect0] = useState('') //정답 보여주기용
+    const [collect0_kor, setCollect0_kor] = useState('') //정답 확인용
+
+    const [topWord, setTopWord] = useState('');
+
+    const [bottom_collect1, setbottom_collect1] = useState('')    //
+    const [bottom_collect2, setbottom_collect2] = useState('')
+    const [bottom_collect3, setbottom_collect3] = useState('')
+    const [bottom_collect4, setbottom_collect4] = useState('')
+    const [bottom_collect5, setbottom_collect5] = useState('')
+
+    useEffect(() => {
+        setAxQuestion(atAxQuestion)
+        setAxAnswer(atAxAnswer)
+
+    }, [atAxQuestion])
+
+    //////////////////////////////////////////
+    function checkCollect(cc) {
+        if (cc === collect0 || cc === collect0_kor) {
+            console.log('맞음');
+            setCollectCount((rr) => rr + 1)
+        } else {
+            console.log('틀림');
+            setFailCount((rr) => rr + 1)
+        }
+
+        if (current < atAxQuestion.length) {
+            current += 1;
+            if (current % 2 == 0) {
+                randomCollect(current, false)
+            } else {
+                randomCollect(current, true)
+            }
+        } else {
+            // Alert.alert('끝!')
+            current = 1
+            setFinalModal(true)
+        }
+    }
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    function shuffle(array = []) { return array.slice().sort(() => Math.random() - 0.5); }
+
+
+    function randomCollect(randomint, isen) {
+
+        var sortArray = []
+        var sortErrorArray = []
+        var bottomArray = []
+
+        if (!isen) {
+            sortArray = axQuestion;
+            sortErrorArray = shuffle(axAnswer);
+
+            console.log('???????????????????????????????????');
+            console.log(sortArray);
+
+            setCollect0(sortArray[randomint - 1].Ko_name);
+            setCollect0_kor(sortArray[randomint - 1].En_name);
+            setTopWord(sortArray[randomint - 1].Ko_name)
+
+            console.log(randomint);
+
+            console.log(sortArray[randomint - 1].Ko_name);
+            console.log(sortArray[randomint - 1].En_name);
+
+            bottomArray = [sortArray[randomint - 1].En_name, sortErrorArray[0].En_name, sortErrorArray[1].En_name, sortErrorArray[2].En_name, sortErrorArray[3].En_name]
+            bottomArray = shuffle(bottomArray)
+
+            setbottom_collect1(bottomArray[0]);
+            setbottom_collect2(bottomArray[1]);
+            setbottom_collect3(bottomArray[2]);
+            setbottom_collect4(bottomArray[3]);
+            setbottom_collect5(bottomArray[4]);
+
+        } else {
+            sortArray = axQuestion
+            sortErrorArray = shuffle(axAnswer);
+
+
+            console.log('???????????????????????????????????')
+            console.log(sortArray)
+
+            setCollect0(sortArray[randomint - 1].En_name);
+            setCollect0_kor(sortArray[randomint - 1].Ko_name);
+            setTopWord(sortArray[randomint - 1].En_name)
+
+            bottomArray = [sortArray[randomint - 1].Ko_name, sortErrorArray[0].Ko_name, sortErrorArray[1].Ko_name, sortErrorArray[2].Ko_name, sortErrorArray[3].Ko_name]
+            bottomArray = shuffle(bottomArray)
+
+            console.log(randomint);
+            console.log(sortArray[randomint - 1].Ko_name);
+            console.log(sortArray[randomint - 1].En_name);
+
+            setbottom_collect1(bottomArray[0]);
+            setbottom_collect2(bottomArray[1]);
+            setbottom_collect3(bottomArray[2]);
+            setbottom_collect4(bottomArray[3]);
+            setbottom_collect5(bottomArray[4]);
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -33,6 +164,9 @@ const FinalQuestion = () => {
             <View style={{ width: chwidth, flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 20, paddingRight: 20, padding: 10 }}>
                 <TouchableWithoutFeedback onPress={() => {
                     console.log('zzz')
+
+                    randomCollect(1, true)
+                    setTopWord(atAxQuestion[0].En_name)
                 }}>
                     <AutoHeightImage source={headerIcon} width={150}></AutoHeightImage>
                 </TouchableWithoutFeedback>
@@ -54,14 +188,107 @@ const FinalQuestion = () => {
                 </View>
 
                 <View style={{ borderRadius: 8, borderWidth: 1, width: chwidth - 40, flex: 1, borderColor: 'rgb(146,8,210)', alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ fontSize: 20, color: 'rgb(146,8,210)', fontWeight: 'bold' }}>단어</Text>
+                    <Text style={{ fontSize: 20, color: 'rgb(146,8,210)', fontWeight: 'bold' }}>{topWord}</Text>
                 </View>
 
             </View>
 
-            <View style={{ flex: 1.5, alignItems: 'center' }}>
-                <Text style={{ marginTop: 30, fontSize: 20, fontWeight: 'bold', color: 'black', letterSpacing: -1 }}>위의 단어의 뜻 혹은 영단어는?</Text>
+            <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20, marginBottom: 20 }}>
+                {isStartPlay ?
+                    <Text style={{ marginTop: 10, marginBottom: 10, fontSize: 20, fontWeight: 'bold', color: 'black', letterSpacing: -1 }}>위의 단어의 뜻 혹은 영단어는?</Text>
+                    :
+                    <TouchableWithoutFeedback onPress={() => {
+                        randomCollect(1, true)
+                        setTopWord(atAxQuestion[0].En_name)
+                        setIsStartPlay(true)
+                    }}>
+                        <View style={{ width: 200, padding: 10, borderRadius: 20, backgroundColor: 'rgb(94,131,222)', alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={{ color: 'white', fontFamily: 'Jua-Regular', fontSize: 20 }}>시작</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                }
             </View>
+            <View style={{ flex: 1.5, alignItems: 'center' }}>
+
+
+
+                {/* 정답상자 시작 */}
+                <View style={{ alignItems: 'center', marginTop: 5, flex: 1, }}>
+                    <TouchableWithoutFeedback onPress={() => {
+                        console.log(bottom_collect1);
+                        checkCollect(bottom_collect1);
+                    }}>
+                        <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
+                            <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect1}</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={() => {
+                        console.log(bottom_collect2);
+                        checkCollect(bottom_collect2);
+                    }}>
+                        <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
+                            <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect2}</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={() => {
+                        console.log(bottom_collect3);
+                        checkCollect(bottom_collect3);
+                    }}>
+                        <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
+                            <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect3}</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={() => {
+                        console.log(bottom_collect4);
+                        checkCollect(bottom_collect4);
+                    }}>
+                        <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
+                            <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect4}</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={() => {
+                        console.log(bottom_collect5);
+                        checkCollect(bottom_collect5);
+                    }}>
+                        <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
+                            <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect5}</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </View>
+                {/* 정답상자 끝 */}
+            </View>
+
+
+            <Modal visible={finalModal} transparent={true}>
+                <SafeAreaView style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', alignItems: 'center', justifyContent: 'center' }}>
+                    <View style={{ width: '60%', height: 130, borderRadius: 10, backgroundColor: 'white', marginBottom: 8, alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={{ fontFamily: 'Jua-Regular', fontSize: 23, color: 'black', marginRight: 10 }}>정답</Text>
+                            <Text style={{ fontFamily: 'Jua-Regular', fontSize: 23, color: 'rgb(233,95,10)' }}>{collectCount}</Text>
+                        </View>
+
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
+                            <Text style={{ fontFamily: 'Jua-Regular', fontSize: 23, color: 'black', marginRight: 10 }}>오답</Text>
+                            <Text style={{ fontFamily: 'Jua-Regular', fontSize: 23, color: 'rgb(233,95,10)' }}>{failCount}</Text>
+                        </View>
+                    </View>
+
+                    <View style={{ width: '60%', height: 50, borderRadius: 10, backgroundColor: 'rgb(116,219,178)', marginBottom: 8, alignItems: 'center', justifyContent: 'center' }}>
+                        <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Jua-Regular' }}>단어 저장 하기</Text>
+                    </View>
+
+                    <TouchableWithoutFeedback onPress={() => {
+                        console.log('zzz');
+                        navigation.navigate('문제개수')
+                    }}>
+                        <View style={{ width: '60%', height: 50, borderRadius: 8, backgroundColor: 'rgb(53,93,194)', alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Jua-Regular' }}>다른 단어 암기</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </SafeAreaView>
+            </Modal>
+
+
 
         </SafeAreaView>
     )

@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/core';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import {
@@ -13,7 +14,7 @@ import {
 } from 'react-native';
 import AutoHeightImage from 'react-native-auto-height-image';
 import { useRecoilState } from 'recoil';
-import { atomGrade } from '../atom/atom';
+import { atomGrade, atomId } from '../atom/atom';
 
 const chwidth = Dimensions.get('screen').width
 
@@ -21,8 +22,12 @@ const chwidth = Dimensions.get('screen').width
 const headerIcon = require('../img/headerIcon.png')
 
 const CourseChoice = () => {
+    const navigation = useNavigation()
 
     const [courseList, setCourseList] = useState([])
+
+    const [atId, setAtId] = useRecoilState(atomId); //아이디
+
     const [atGrade, setAtGrade] = useRecoilState(atomGrade); //학년
 
     const CourseRequest = async () => {
@@ -45,7 +50,13 @@ const CourseChoice = () => {
 
     useEffect(() => {
         CourseRequest()
+
+        console.log(atId)
     }, [])
+
+    useEffect(() => {
+        console.log(courseList);
+    }, [courseList])
 
     function CourseBlock({ course }) {
         // console.log(course)
@@ -53,6 +64,7 @@ const CourseChoice = () => {
             <TouchableWithoutFeedback onPress={() => {
                 setAtGrade(course)
                 console.log(course)
+                navigation.navigate('문제개수')
             }}>
                 <View style={{ backgroundColor: 'rgb(53,93,194)', width: chwidth - 60, height: 50, borderRadius: 10, margin: 20, alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>{course}</Text>
@@ -71,7 +83,7 @@ const CourseChoice = () => {
                 {/* <CourseBlockPush></CourseBlockPush> */}
                 {courseList.map((course, index) => <CourseBlock key={index} course={course.course} />)}
 
-                <CourseBlock course={'고등학교'}></CourseBlock>
+                <CourseBlock course={'고등학교1학년'}></CourseBlock>
             </View>
             <View style={{ height: 50 }}></View>
         </SafeAreaView>
