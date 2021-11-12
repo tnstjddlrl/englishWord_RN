@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/core';
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import {
     Alert,
@@ -17,8 +18,8 @@ import {
 import AutoHeightImage from 'react-native-auto-height-image';
 
 import SelectDropdown from 'react-native-select-dropdown'
-import { useRecoilState } from 'recoil';
-import { atomGrade } from '../atom/atom';
+import { constSelector, useRecoilState } from 'recoil';
+import { atomGrade, atomId, atomIsSaveWord, atomSaveAnswer, atomSaveQuestion } from '../atom/atom';
 
 const headerIcon = require('../img/headerIcon.png')
 
@@ -29,11 +30,91 @@ const select_arrow = require('../img/select_arrow.png')
 
 const countries = ["5개", "9개"]
 
+var saveCnt = 0
+
 const QuestionChoice = () => {
     const navigation = useNavigation()
     const [cnt, setCnt] = useState('')
 
+    const [atId, setAtId] = useRecoilState(atomId); //아이디
     const [atGrade, setAtGrade] = useRecoilState(atomGrade); //학년
+
+    const [atSaveAnswer, setAtSaveAnswer] = useRecoilState(atomSaveAnswer)
+    const [atSaveQuestion, setAtSaveQuestion] = useRecoilState(atomSaveQuestion)
+    const [atIsSaveWord, setAtIsSaveWord] = useRecoilState(atomIsSaveWord)
+
+    const isSaveWord_Request = async () => {
+        await axios.get('https://hjong0108.cafe24.com/bbs/post.php', {
+            params: {
+                type: 'request_course',
+                id: atId,
+                grade: atGrade
+            },
+        }).catch((err) => {
+            console.log(err)
+        }).then(async (res) => {
+            console.log('리턴 : ' + res.data);
+            console.log(res.data)
+
+            if (res.data.result === 'save_course') {
+                console.log(res.data.questions);
+                console.log(res.data.answers);
+
+                setAtSaveAnswer(res.data.answers)
+                setAtSaveQuestion(res.data.questions)
+                setAtIsSaveWord(true)
+                saveCnt = res.data.questions.length;
+                setTimeout(() => {
+                    Alert.alert('기존에 저장된 문제가 있습니다.', '저장된 문제를 암기하시겠습니까?',
+                        [
+                            {
+                                text: "취소",
+                                onPress: () => {
+                                    console.log("Cancel Pressed")
+                                    setAtIsSaveWord(false)
+                                },
+                                style: "cancel"
+                            },
+                            { text: "확인", onPress: () => QuestionLenthAndNavigate() }
+                        ])
+                }, 500);
+            } else {
+                console.log('아무것도없음!')
+            }
+        })
+    }
+
+    useEffect(() => {
+        if (atId != null && atGrade != null) {
+            isSaveWord_Request()
+        }
+    }, [atId, atGrade])
+
+    function QuestionLenthAndNavigate() {
+        console.log(atSaveQuestion);
+        console.log(saveCnt);
+        if (saveCnt == 5) {
+            navigation.navigate('문제풀이')
+        } else if (saveCnt == 9) {
+            navigation.navigate('문제풀이9')
+        } else {
+            Alert.alert('네트워크 오류가 발생하였습니다.', '앱이 재실행됩니다.')
+            setTimeout(() => {
+                console.log('앱재실행')
+            }, 1500);
+        }
+    }
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            // do something
+            // Alert.alert('방문!')
+            // isSaveWord_Request()
+        });
+
+        return unsubscribe;
+    }, [navigation])
+
 
 
     return (
@@ -86,8 +167,10 @@ const QuestionChoice = () => {
                     <TouchableWithoutFeedback onPress={() => {
                         if (cnt === '5개') {
                             navigation.navigate('문제풀이')
-                        } else {
+                        } else if (cnt === '9개') {
                             navigation.navigate('문제풀이9')
+                        } else {
+                            Alert.alert('갯수를 선택해주세요.')
                         }
                     }}>
                         <View style={{ width: chwidth - 80, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(53,93,194)' }}>

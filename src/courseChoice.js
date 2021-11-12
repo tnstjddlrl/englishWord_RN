@@ -34,7 +34,7 @@ const CourseChoice = () => {
         await axios.get('https://hjong0108.cafe24.com/bbs/post.php', {
             params: {
                 type: 'course_list',
-                id: 'test'
+                id: atId
             },
         }).catch((err) => {
             console.log(err)
@@ -42,9 +42,6 @@ const CourseChoice = () => {
             console.log('리턴 : ' + res.data);
             console.log(res.data.values)
             setCourseList(res.data.values)
-            // if (res.data == '') {
-
-            // }
         })
     }
 
@@ -83,7 +80,6 @@ const CourseChoice = () => {
                 {/* <CourseBlockPush></CourseBlockPush> */}
                 {courseList.map((course, index) => <CourseBlock key={index} course={course.course} />)}
 
-                <CourseBlock course={'고등학교1학년'}></CourseBlock>
             </View>
             <View style={{ height: 50 }}></View>
         </SafeAreaView>

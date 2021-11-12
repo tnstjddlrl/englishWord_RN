@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 
 import { useRecoilState } from 'recoil';
-import { atomAxAnswer, atomAxQuestion, atomGrade, atomId } from '../atom/atom';
+import { atomAxAnswer, atomAxQuestion, atomGrade, atomId, atomIsSaveWord, atomSaveAnswer, atomSaveQuestion } from '../atom/atom';
 
 import { useNavigation } from '@react-navigation/core';
 import axios from 'axios';
@@ -42,7 +42,7 @@ const Question = () => {
 
     const [arriveFirst, setArriveFirst] = useState(true)
 
-    const [timer, setTimer] = useState(5);
+    const [timer, setTimer] = useState(3);
     const [secon, setSecon] = useState('00');
 
     const [smallTimer, setSmallTimer] = useState(5);
@@ -62,6 +62,10 @@ const Question = () => {
 
     const [atAxQuestion, setAtAxQuestion] = useRecoilState(atomAxQuestion)
     const [atAxAnswer, setAtAxAnswer] = useRecoilState(atomAxAnswer)
+
+    const [atSaveAnswer, setAtSaveAnswer] = useRecoilState(atomSaveAnswer)
+    const [atSaveQuestion, setAtSaveQuestion] = useRecoilState(atomSaveQuestion)
+    const [atIsSaveWord, setAtIsSaveWord] = useRecoilState(atomIsSaveWord)
 
     const [errorArray, setErrorArray] = useState([])
 
@@ -106,7 +110,7 @@ const Question = () => {
             params: {
                 type: 'new_course',
                 grade: '고등학교1학년', //atGrade
-                id: 'test', //atId
+                id: atId, //atId
                 cnt: 5,
             },
         }).catch((err) => {
@@ -115,9 +119,32 @@ const Question = () => {
             console.log('리턴 : ' + res.data);
             console.log(res.data);
 
-            setAxAnswer(res.data.answers);
-            setAxQuestion(res.data.questions);
+            if (res.data == 'course_full') {
+                // Alert.alert('문제를 전부 제공하였습니다.')
+                console.log('??')
+                resetCourse().then(() => {
+                    Questionrequest()
+                })
 
+            } else {
+                setAxAnswer(res.data.answers);
+                setAxQuestion(res.data.questions);
+            }
+        });
+    };
+
+    const resetCourse = async () => {
+        await axios.get('https://hjong0108.cafe24.com/bbs/post.php', {
+            params: {
+                type: 'course_reset',
+                grade: '고등학교1학년',
+                id: 'test', //atId
+            },
+        }).catch((err) => {
+            console.log(err)
+        }).then((res) => {
+            console.log('리턴 : ' + res.data);
+            console.log(res.data);
         });
     };
 
@@ -140,40 +167,52 @@ const Question = () => {
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             // do something
-            Questionrequest()
+            console.log('포커스');
+            console.log(atIsSaveWord)
+
+            setCurrentCollect(0)
+            setCurrentPlay(0)
         });
 
         return unsubscribe;
     }, [navigation]);
 
     useEffect(() => {
-        userInform()
     }, []);
 
     useEffect(() => {
         console.log('배열 값 변경완료');
         console.log(axQuestion);
-
+        if (axQuestion.length > 0) {
+            setUp()
+            isEnKo(redQuestion);
+        }
         return () => {
             AllClearInterval();
         };
     }, [axAnswer, axQuestion]);
 
     function startBtn_click(params) {
+        // isEnKo(redQuestion)
 
-        console.log('처음도착')
-        if ((axQuestion !== []) && arriveFirst) {
-            setArriveFirst(false);
-            setUp()
-            isEnKo(redQuestion);
+        setTimer(300)
+        setSmallTimer(5)
+        if (atIsSaveWord) {
+            setAxAnswer(atSaveAnswer);
+            setAxQuestion(atSaveQuestion);
+            userInform()
+        } else {
+            Questionrequest()
+            userInform()
+        }
 
+        setTimeout(() => {
+            console.log('처음도착')
             interval = intervalset();
             smallInterval = smallIntervalset();
 
             setIsStartPlay(true)
-        } else {
-            Alert.alert('뭔가이상함')
-        }
+        }, 500);
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -211,17 +250,29 @@ const Question = () => {
 
 
     /////////////////////////////////////////////////////////////////////////////////////////
+    function resetEnKo(params) {
+        setCc1('e')
+        setCc2('e')
+        setCc3('e')
+        setCc4('e')
+        setCc5('e')
+    }
+
+
     function setUp(params) {
-        setCollect1(axQuestion[0].En_name);
-        setCollect2(axQuestion[1].En_name);
-        setCollect3(axQuestion[2].En_name);
-        setCollect4(axQuestion[3].En_name);
-        setCollect5(axQuestion[4].En_name);
-        setCollect1_kor(axQuestion[0].Ko_name);
-        setCollect2_kor(axQuestion[1].Ko_name);
-        setCollect3_kor(axQuestion[2].Ko_name);
-        setCollect4_kor(axQuestion[3].Ko_name);
-        setCollect5_kor(axQuestion[4].Ko_name);
+        var array = []
+        array = axQuestion
+
+        setCollect1(array[0].En_name);
+        setCollect2(array[1].En_name);
+        setCollect3(array[2].En_name);
+        setCollect4(array[3].En_name);
+        setCollect5(array[4].En_name);
+        setCollect1_kor(array[0].Ko_name);
+        setCollect2_kor(array[1].Ko_name);
+        setCollect3_kor(array[2].Ko_name);
+        setCollect4_kor(array[3].Ko_name);
+        setCollect5_kor(array[4].Ko_name);
     }
 
 
@@ -339,7 +390,7 @@ const Question = () => {
         }
     }
 
-    function shuffle(array = []) { return array.sort(() => Math.random() - 0.5); }
+    function shuffle(array = []) { return array.slice().sort(() => Math.random() - 0.5); }
 
     function checkQuestion(collect) {
         timerStopAndGo(1002)
@@ -439,11 +490,12 @@ const Question = () => {
             {/* 헤더시작 */}
             <View style={{ width: chwidth, flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 20, paddingRight: 20, padding: 10 }}>
                 <TouchableWithoutFeedback onPress={() => {
-                    startBtn_click();
+                    // startBtn_click();
                 }}>
                     <AutoHeightImage source={headerIcon} width={150}></AutoHeightImage>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
+                    setAtIsSaveWord(false)
                     navigation.goBack();
                 }}>
                     <View style={{ backgroundColor: 'black', borderRadius: 30, width: 60, height: 30, alignItems: 'center', justifyContent: 'center' }}>
@@ -521,7 +573,7 @@ const Question = () => {
                         Alert.alert('먼저 시작버튼을 눌러주세요!')
                     }
                 }}>
-                    <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
+                    <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
                         <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect1}</Text>
                     </View>
                 </TouchableWithoutFeedback>
@@ -534,7 +586,7 @@ const Question = () => {
                         Alert.alert('먼저 시작버튼을 눌러주세요!')
                     }
                 }}>
-                    <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
+                    <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
                         <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect2}</Text>
                     </View>
                 </TouchableWithoutFeedback>
@@ -547,7 +599,7 @@ const Question = () => {
                         Alert.alert('먼저 시작버튼을 눌러주세요!')
                     }
                 }}>
-                    <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
+                    <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
                         <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect3}</Text>
                     </View>
                 </TouchableWithoutFeedback>
@@ -560,7 +612,7 @@ const Question = () => {
                         Alert.alert('먼저 시작버튼을 눌러주세요!')
                     }
                 }}>
-                    <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
+                    <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
                         <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect4}</Text>
                     </View>
                 </TouchableWithoutFeedback>
@@ -573,7 +625,7 @@ const Question = () => {
                         Alert.alert('먼저 시작버튼을 눌러주세요!')
                     }
                 }}>
-                    <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
+                    <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
                         <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect5}</Text>
                     </View>
                 </TouchableWithoutFeedback>
@@ -589,7 +641,7 @@ const Question = () => {
             <Modal visible={isFinish} transparent={true}>
                 <SafeAreaView style={{ flex: 1, backgroundColor: 'rgba(128,128,128,0.5)', alignItems: 'center', justifyContent: 'center' }}>
                     <View style={{ width: '60%', borderTopLeftRadius: 10, borderTopRightRadius: 10, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', padding: 25 }}>
-                        <Text style={{ fontFamily: 'Jua-Regular' }}>총 문제</Text>
+                        <Text style={{ fontFamily: 'Jua-Regular' }}>총 문제 {currentPlay}</Text>
                         <View style={{ flexDirection: 'row', marginTop: 20 }}>
                             <Text style={{ fontFamily: 'Jua-Regular', fontSize: 20, letterSpacing: -1, color: 'black', marginRight: 15 }}>정답횟수</Text>
                             <Text style={{ fontFamily: 'Jua-Regular', fontSize: 20, letterSpacing: -1, color: '#ff6600' }}>{currentCollect}</Text>
@@ -605,7 +657,9 @@ const Question = () => {
                         setAtAxQuestion(axQuestion);
                         navigation.navigate('최종풀이')
                         setIsFinish(false)
-
+                        setIsStartPlay(false)
+                        // setUp()
+                        // resetEnKo()
                     }}>
                         <View style={{ width: '60%', height: 50, borderBottomLeftRadius: 10, borderBottomRightRadius: 10, backgroundColor: 'rgb(94,131,222)', marginBottom: 10, alignItems: 'center', justifyContent: 'center' }}>
                             <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Jua-Regular' }}>문제풀러가기</Text>

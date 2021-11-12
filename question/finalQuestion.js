@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/core';
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import {
     Alert,
@@ -15,10 +16,11 @@ import {
 } from 'react-native';
 
 import AutoHeightImage from 'react-native-auto-height-image';
+import Spinner from 'react-native-loading-spinner-overlay';
 import { useRecoilState } from 'recoil';
 
 
-import { atomAxAnswer, atomAxQuestion, atomGrade, atomId } from '../atom/atom';
+import { atomAxAnswer, atomAxQuestion, atomGrade, atomId, atomIsSaveWord, atomSaveAnswer, atomSaveQuestion } from '../atom/atom';
 
 const chwidth = Dimensions.get('screen').width;
 const chheight = Dimensions.get('screen').height;
@@ -35,6 +37,8 @@ const FinalQuestion = () => {
 
     const [isStartPlay, setIsStartPlay] = useState(false)
 
+    const [isSpinner, setIsSpinner] = useState(false)
+
     // const [current, setCurrent] = useState(1)
     const [collectCount, setCollectCount] = useState(0)
     const [failCount, setFailCount] = useState(0)
@@ -46,6 +50,10 @@ const FinalQuestion = () => {
 
     const [atAxQuestion, setAtAxQuestion] = useRecoilState(atomAxQuestion)
     const [atAxAnswer, setAtAxAnswer] = useRecoilState(atomAxAnswer)
+
+    const [atSaveAnswer, setAtSaveAnswer] = useRecoilState(atomSaveAnswer)
+    const [atSaveQuestion, setAtSaveQuestion] = useRecoilState(atomSaveQuestion)
+    const [atIsSaveWord, setAtIsSaveWord] = useRecoilState(atomIsSaveWord)
 
     const [axQuestion, setAxQuestion] = useState([])
     const [axAnswer, setAxAnswer] = useState([])
@@ -101,12 +109,12 @@ const FinalQuestion = () => {
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     const request = async () => {
-        console.log(id + pwd)
         await axios.get('https://hjong0108.cafe24.com/bbs/post.php', {
             params: {
                 type: 'word_save',
-                grade: '고등학교1학년',//atGrade,
-                save_word: axQuestion
+                id: atId,
+                grade: atGrade,//atGrade,
+                save_word: JSON.stringify(axQuestion)
             },
         }).catch((err) => {
             console.log(err)
@@ -114,15 +122,16 @@ const FinalQuestion = () => {
             console.log(res)
             console.log('리턴 : ' + res.data)
         })
+        // console.log(axQuestion);
     }
 
     const request2 = async () => {
-        console.log(id + pwd)
         await axios.get('https://hjong0108.cafe24.com/bbs/post.php', {
             params: {
-                type: 'suc_word',
+                type: 'work_end',
+                id: 'test',
                 grade: '고등학교1학년',//atGrade,
-                save_word: finalResultArray
+                suc_word: JSON.stringify(finalResultArray)
             },
         }).catch((err) => {
             console.log(err)
@@ -132,27 +141,41 @@ const FinalQuestion = () => {
 
             finalResultArray = []
         })
+        // console.log(finalResultArray);
     }
 
     function saveWord(params) {
-        request().then(() => {
+        setIsSpinner(true)
+        setAtSaveAnswer(axAnswer)
+        setAtSaveQuestion(axQuestion)
+        setAtIsSaveWord(true)
 
+        request().then(() => {
+            request2()
         })
+
+        setTimeout(() => {
+            if (axQuestion.length == 5) {
+                navigation.navigate('문제풀이')
+            } else {
+                navigation.navigate('문제풀이9')
+            }
+        }, 1000);
     }
 
     function anotherWord() {
-        finalResultArray = []
-
+        setAtIsSaveWord(false)
+        request2()
+        setTimeout(() => {
+            finalResultArray = []
+        }, 1000);
     }
-
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     function shuffle(array = []) { return array.slice().sort(() => Math.random() - 0.5); }
 
-
     function randomCollect(randomint, isen) {
-
         var sortArray = []
         var sortErrorArray = []
         var bottomArray = []
@@ -275,7 +298,7 @@ const FinalQuestion = () => {
                         console.log(bottom_collect1);
                         checkCollect(bottom_collect1);
                     }}>
-                        <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
+                        <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
                             <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect1}</Text>
                         </View>
                     </TouchableWithoutFeedback>
@@ -283,7 +306,7 @@ const FinalQuestion = () => {
                         console.log(bottom_collect2);
                         checkCollect(bottom_collect2);
                     }}>
-                        <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
+                        <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
                             <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect2}</Text>
                         </View>
                     </TouchableWithoutFeedback>
@@ -291,7 +314,7 @@ const FinalQuestion = () => {
                         console.log(bottom_collect3);
                         checkCollect(bottom_collect3);
                     }}>
-                        <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
+                        <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
                             <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect3}</Text>
                         </View>
                     </TouchableWithoutFeedback>
@@ -299,7 +322,7 @@ const FinalQuestion = () => {
                         console.log(bottom_collect4);
                         checkCollect(bottom_collect4);
                     }}>
-                        <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
+                        <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
                             <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect4}</Text>
                         </View>
                     </TouchableWithoutFeedback>
@@ -307,7 +330,7 @@ const FinalQuestion = () => {
                         console.log(bottom_collect5);
                         checkCollect(bottom_collect5);
                     }}>
-                        <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(238,248,244)' }}>
+                        <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
                             <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect5}</Text>
                         </View>
                     </TouchableWithoutFeedback>
@@ -330,14 +353,18 @@ const FinalQuestion = () => {
                         </View>
                     </View>
 
-                    <View style={{ width: '60%', height: 50, borderRadius: 10, backgroundColor: 'rgb(116,219,178)', marginBottom: 8, alignItems: 'center', justifyContent: 'center' }}>
-                        <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Jua-Regular' }}>단어 저장 하기</Text>
-                    </View>
+                    <TouchableWithoutFeedback onPress={() => {
+                        saveWord()
+                    }}>
+                        <View style={{ width: '60%', height: 50, borderRadius: 10, backgroundColor: 'rgb(116,219,178)', marginBottom: 8, alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Jua-Regular' }}>같은 단어 암기</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
 
                     <TouchableWithoutFeedback onPress={() => {
                         console.log('zzz');
-                        navigation.navigate('문제개수')
                         anotherWord()
+                        navigation.navigate('문제개수')
                     }}>
                         <View style={{ width: '60%', height: 50, borderRadius: 8, backgroundColor: 'rgb(53,93,194)', alignItems: 'center', justifyContent: 'center' }}>
                             <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Jua-Regular' }}>다른 단어 암기</Text>
