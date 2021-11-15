@@ -199,7 +199,7 @@ const Question9 = () => {
     }, [axAnswer, axQuestion]);
     function startBtn_click(params) {
 
-        setTimer(300)
+        setTimer(180)
         setSmallTimer(5)
         if (atIsSaveWord) {
             setAxAnswer(atSaveAnswer);
@@ -535,6 +535,7 @@ const Question9 = () => {
 
     function smallTimerOut() {
         if (smallTimer <= 0) {//작은타이머 숫자 다 지나가면 실행됨
+            setTouchBlockModal(true)
             timerStopAndGo(1002)
         };
     };
@@ -655,8 +656,10 @@ const Question9 = () => {
             <View style={{ alignItems: 'center', marginTop: 5, flex: 1, }}>
                 <TouchableWithoutFeedback onPress={() => {
                     if (isStartPlay) {
-                        console.log(bottom_collect1);
-                        checkQuestion(bottom_collect1);
+                        if (!touchBlockModal) {
+                            console.log(bottom_collect1);
+                            checkQuestion(bottom_collect1);
+                        }
                     } else {
                         Alert.alert('먼저 시작버튼을 눌러주세요!')
                     }
@@ -667,8 +670,10 @@ const Question9 = () => {
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
                     if (isStartPlay) {
-                        console.log(bottom_collect2);
-                        checkQuestion(bottom_collect2)
+                        if (!touchBlockModal) {
+                            console.log(bottom_collect2);
+                            checkQuestion(bottom_collect2)
+                        }
                     } else {
                         Alert.alert('먼저 시작버튼을 눌러주세요!')
                     }
@@ -679,8 +684,10 @@ const Question9 = () => {
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
                     if (isStartPlay) {
-                        console.log(bottom_collect3);
-                        checkQuestion(bottom_collect3)
+                        if (!touchBlockModal) {
+                            console.log(bottom_collect3);
+                            checkQuestion(bottom_collect3)
+                        }
                     } else {
                         Alert.alert('먼저 시작버튼을 눌러주세요!')
                     }
@@ -691,8 +698,10 @@ const Question9 = () => {
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
                     if (isStartPlay) {
-                        console.log(bottom_collect4);
-                        checkQuestion(bottom_collect4)
+                        if (!touchBlockModal) {
+                            console.log(bottom_collect4);
+                            checkQuestion(bottom_collect4)
+                        }
                     } else {
                         Alert.alert('먼저 시작버튼을 눌러주세요!')
                     }
@@ -703,8 +712,10 @@ const Question9 = () => {
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
                     if (isStartPlay) {
-                        console.log(bottom_collect5);
-                        checkQuestion(bottom_collect5)
+                        if (!touchBlockModal) {
+                            console.log(bottom_collect5);
+                            checkQuestion(bottom_collect5)
+                        }
                     } else {
                         Alert.alert('먼저 시작버튼을 눌러주세요!')
                     }

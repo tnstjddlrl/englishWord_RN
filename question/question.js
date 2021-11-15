@@ -33,17 +33,19 @@ var smallInterval;
 const Question = () => {
     const navigation = useNavigation()
 
-    const [isStartPlay, setIsStartPlay] = useState(false)
+    const [isStartPlay, setIsStartPlay] = useState(false) //시작했는지 판별용
 
-    const [isFinish, setIsFinish] = useState(false)
+    const [isFinish, setIsFinish] = useState(false) //끝났는지 판별용
 
     const [currentPlay, setCurrentPlay] = useState(0); //현재 횟수
-    const [currentCollect, setCurrentCollect] = useState(0)
+    const [currentCollect, setCurrentCollect] = useState(0) //맞은횟수
 
     const [arriveFirst, setArriveFirst] = useState(true)
 
+    const [isStop, setIsStop] = useState(false) //stopandgo 부를때 true로 바꾸어짐, 여러번 함수 호출되는거 방지용
+
     const [timer, setTimer] = useState(3);
-    const [secon, setSecon] = useState('00');
+    const [secon, setSecon] = useState('00'); //큰타이머
 
     const [smallTimer, setSmallTimer] = useState(5);
     const [redQuestion, setRedQuestion] = useState(getRandomInt(1, 6, redQuestion));
@@ -195,7 +197,7 @@ const Question = () => {
     function startBtn_click(params) {
         // isEnKo(redQuestion)
 
-        setTimer(300)
+        setTimer(180)
         setSmallTimer(5)
         if (atIsSaveWord) {
             setAxAnswer(atSaveAnswer);
@@ -277,21 +279,27 @@ const Question = () => {
 
 
     function timerStopAndGo(setint) {
-        setTouchBlockModal(true);
-        setCurrentPlay((rr) => rr + 1);
+        if (!isStop) {
+            setIsStop(true)
+            setTouchBlockModal(true);
+            setCurrentPlay((rr) => rr + 1);
 
-        AllClearInterval();
+            AllClearInterval();
 
-        setTimeout(() => {
-            var randomint = getRandomInt(1, 6, redQuestion);
-            setRedQuestion(randomint);
+            setTimeout(() => {
+                var randomint = getRandomInt(1, 6, redQuestion);
+                setRedQuestion(randomint);
 
-            isEnKo(randomint)
-            interval = intervalset();
-            setSmallTimer(5);
-            smallInterval = smallIntervalset();
-            setTouchBlockModal(false);
-        }, setint);
+                isEnKo(randomint)
+                interval = intervalset();
+                setSmallTimer(5);
+                smallInterval = smallIntervalset();
+                setTouchBlockModal(false);
+                setIsStop(false)
+            }, setint);
+        } else {
+            console.log('중복 호출!');
+        }
     };
 
     function isEnKo(randomint) {
@@ -356,8 +364,6 @@ const Question = () => {
 
             var bottomArray = [sortArray[randomint - 1].En_name, sortErrorArray[0].En_name, sortErrorArray[1].En_name, sortErrorArray[2].En_name, sortErrorArray[3].En_name]
             bottomArray = shuffle(bottomArray)
-
-
 
             setbottom_collect1(bottomArray[0]);
             setbottom_collect2(bottomArray[1]);
@@ -467,6 +473,7 @@ const Question = () => {
 
     function smallTimerOut() {
         if (smallTimer <= 0) {//작은타이머 숫자 다 지나가면 실행됨
+            setTouchBlockModal(true)
             timerStopAndGo(1002)
         };
     };
@@ -567,8 +574,10 @@ const Question = () => {
             <View style={{ alignItems: 'center', marginTop: 5, flex: 1, }}>
                 <TouchableWithoutFeedback onPress={() => {
                     if (isStartPlay) {
-                        console.log(bottom_collect1);
-                        checkQuestion(bottom_collect1);
+                        if (!touchBlockModal || smallTimer === 0) {
+                            console.log(bottom_collect1);
+                            checkQuestion(bottom_collect1);
+                        }
                     } else {
                         Alert.alert('먼저 시작버튼을 눌러주세요!')
                     }
@@ -580,11 +589,15 @@ const Question = () => {
                 <TouchableWithoutFeedback onPress={() => {
 
                     if (isStartPlay) {
-                        console.log(bottom_collect2);
-                        checkQuestion(bottom_collect2);
+                        if (!touchBlockModal || smallTimer === 0) {
+                            console.log(bottom_collect2);
+                            checkQuestion(bottom_collect2);
+                        }
                     } else {
                         Alert.alert('먼저 시작버튼을 눌러주세요!')
                     }
+
+
                 }}>
                     <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
                         <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect2}</Text>
@@ -593,8 +606,10 @@ const Question = () => {
                 <TouchableWithoutFeedback onPress={() => {
 
                     if (isStartPlay) {
-                        console.log(bottom_collect3);
-                        checkQuestion(bottom_collect3);
+                        if (!touchBlockModal || smallTimer === 0) {
+                            console.log(bottom_collect3);
+                            checkQuestion(bottom_collect3);
+                        }
                     } else {
                         Alert.alert('먼저 시작버튼을 눌러주세요!')
                     }
@@ -606,8 +621,10 @@ const Question = () => {
                 <TouchableWithoutFeedback onPress={() => {
 
                     if (isStartPlay) {
-                        console.log(bottom_collect4);
-                        checkQuestion(bottom_collect4);
+                        if (!touchBlockModal || smallTimer === 0) {
+                            console.log(bottom_collect4);
+                            checkQuestion(bottom_collect4);
+                        }
                     } else {
                         Alert.alert('먼저 시작버튼을 눌러주세요!')
                     }
@@ -619,8 +636,11 @@ const Question = () => {
                 <TouchableWithoutFeedback onPress={() => {
 
                     if (isStartPlay) {
-                        console.log(bottom_collect5);
-                        checkQuestion(bottom_collect5);
+                        if (!touchBlockModal || smallTimer === 0) {
+                            console.log(bottom_collect5);
+                            checkQuestion(bottom_collect5);
+                        }
+
                     } else {
                         Alert.alert('먼저 시작버튼을 눌러주세요!')
                     }

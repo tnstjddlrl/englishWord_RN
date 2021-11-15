@@ -100,7 +100,7 @@ const Login = () => {
                             <AutoHeightImage source={loginPicture} width={75}></AutoHeightImage>
                         </View>
 
-                        <Text style={{ fontFamily: 'Jua-Regular', color: 'rgb(53,93,194)', fontSize: 35 }}>영단어 TEST</Text>
+                        <Text style={{ fontFamily: 'Jua-Regular', color: 'rgb(53,93,194)', fontSize: 35 }}>Switching TEST</Text>
                         <Text>English Word Test</Text>
                     </View>
 
