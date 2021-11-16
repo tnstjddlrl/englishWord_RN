@@ -29,6 +29,7 @@ const person = require('../img/person.png');
 
 var interval;
 var smallInterval;
+var isStop;
 
 const Question = () => {
     const navigation = useNavigation()
@@ -42,7 +43,7 @@ const Question = () => {
 
     const [arriveFirst, setArriveFirst] = useState(true)
 
-    const [isStop, setIsStop] = useState(false) //stopandgo 부를때 true로 바꾸어짐, 여러번 함수 호출되는거 방지용
+    // const [isStop, setIsStop] = useState(false) //stopandgo 부를때 true로 바꾸어짐, 여러번 함수 호출되는거 방지용
 
     const [timer, setTimer] = useState(3);
     const [secon, setSecon] = useState('00'); //큰타이머
@@ -280,7 +281,7 @@ const Question = () => {
 
     function timerStopAndGo(setint) {
         if (!isStop) {
-            setIsStop(true)
+            isStop = true
             setTouchBlockModal(true);
             setCurrentPlay((rr) => rr + 1);
 
@@ -295,7 +296,7 @@ const Question = () => {
                 setSmallTimer(5);
                 smallInterval = smallIntervalset();
                 setTouchBlockModal(false);
-                setIsStop(false)
+                isStop = false
             }, setint);
         } else {
             console.log('중복 호출!');

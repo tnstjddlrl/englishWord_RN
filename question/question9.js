@@ -29,6 +29,8 @@ const person = require('../img/person.png');
 
 var interval;
 var smallInterval;
+var isStop;
+
 
 const Question9 = () => {
     const navigation = useNavigation()
@@ -289,21 +291,30 @@ const Question9 = () => {
     }
 
     function timerStopAndGo(setint) {
-        setTouchBlockModal(true);
 
-        setCurrentPlay((rr) => rr + 1);
-        AllClearInterval();
+        if (!isStop) {
+            isStop = true
 
-        setTimeout(() => {
-            var randomint = getRandomInt(1, 10, redQuestion);
-            setRedQuestion(randomint);
+            setTouchBlockModal(true);
 
-            isEnKo(randomint)
-            interval = intervalset();
-            setSmallTimer(5);
-            smallInterval = smallIntervalset();
-            setTouchBlockModal(false);
-        }, setint);
+            setCurrentPlay((rr) => rr + 1);
+            AllClearInterval();
+
+            setTimeout(() => {
+                var randomint = getRandomInt(1, 10, redQuestion);
+                setRedQuestion(randomint);
+
+                isEnKo(randomint)
+                interval = intervalset();
+                setSmallTimer(5);
+                smallInterval = smallIntervalset();
+                setTouchBlockModal(false);
+                isStop = false
+            }, setint);
+
+        } else {
+            console.log('중복 호출!')
+        }
     };
 
     function isEnKo(randomint) {

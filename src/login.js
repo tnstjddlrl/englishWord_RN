@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     Alert,
+    BackHandler,
     Dimensions,
     SafeAreaView,
     ScrollView,
@@ -48,6 +49,8 @@ const getAsyncId = async () => {
 }
 
 
+
+
 const Login = () => {
     const navigation = useNavigation()
 
@@ -86,6 +89,27 @@ const Login = () => {
 
         })
     }
+
+    useEffect(() => {
+        const backAction = () => {
+            Alert.alert("앱 종료", "앱을 종료하시겠습니까?", [
+                {
+                    text: "취소",
+                    onPress: () => null,
+                    style: "cancel"
+                },
+                { text: "확인", onPress: () => BackHandler.exitApp() }
+            ]);
+            return true;
+        };
+
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        );
+
+        return () => backHandler.remove();
+    }, []);
 
 
     return (

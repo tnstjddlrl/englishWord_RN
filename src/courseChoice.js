@@ -2,14 +2,12 @@ import { useNavigation } from '@react-navigation/core';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import {
+    Alert,
+    BackHandler,
     Dimensions,
     SafeAreaView,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
     Text,
     TouchableWithoutFeedback,
-    useColorScheme,
     View,
 } from 'react-native';
 import AutoHeightImage from 'react-native-auto-height-image';
@@ -46,6 +44,27 @@ const CourseChoice = () => {
     }
 
     useEffect(() => {
+        const backAction = () => {
+            Alert.alert("앱 종료", "앱을 종료하시겠습니까?", [
+                {
+                    text: "취소",
+                    onPress: () => null,
+                    style: "cancel"
+                },
+                { text: "확인", onPress: () => BackHandler.exitApp() }
+            ]);
+            return true;
+        };
+
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        );
+
+        return () => backHandler.remove();
+    }, []);
+
+    useEffect(() => {
         CourseRequest()
 
         console.log(atId)
@@ -73,9 +92,23 @@ const CourseChoice = () => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <View style={{ width: '100%', }}>
-                <AutoHeightImage source={headerIcon} width={180} style={{ margin: 10 }}></AutoHeightImage>
+            {/* 헤더시작 */}
+            <View style={{ width: chwidth, flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 20, paddingRight: 20, padding: 10 }}>
+                <TouchableWithoutFeedback onPress={() => {
+                    // startBtn_click();
+                }}>
+                    <AutoHeightImage source={headerIcon} width={180}></AutoHeightImage>
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={() => {
+                    // setAtIsSaveWord(false)
+                    navigation.navigate('로그인');
+                }}>
+                    <View style={{ backgroundColor: 'black', borderRadius: 30, width: 80, height: 30, alignItems: 'center', justifyContent: 'center' }}>
+                        <Text style={{ color: 'white' }}>로그아웃</Text>
+                    </View>
+                </TouchableWithoutFeedback>
             </View>
+            {/* 헤더 끝 */}
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 {/* <CourseBlockPush></CourseBlockPush> */}
                 {courseList.map((course, index) => <CourseBlock key={index} course={course.course} />)}

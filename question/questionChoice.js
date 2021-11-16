@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import {
     Alert,
+    BackHandler,
     Dimensions,
     Modal,
     SafeAreaView,
@@ -114,6 +115,28 @@ const QuestionChoice = () => {
 
         return unsubscribe;
     }, [navigation])
+
+    useEffect(() => {
+        const backAction = () => {
+            // Alert.alert("앱 종료", "앱을 종료하시겠습니까?", [
+            //     {
+            //         text: "취소",
+            //         onPress: () => null,
+            //         style: "cancel"
+            //     },
+            //     { text: "확인", onPress: () => BackHandler.exitApp() }
+            // ]);
+            navigation.goBack();
+            return true;
+        };
+
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        );
+
+        return () => backHandler.remove();
+    }, []);
 
 
 
