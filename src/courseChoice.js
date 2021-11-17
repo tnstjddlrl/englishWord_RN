@@ -16,7 +16,6 @@ import { atomGrade, atomId } from '../atom/atom';
 
 const chwidth = Dimensions.get('screen').width
 
-
 const headerIcon = require('../img/headerIcon.png')
 
 const CourseChoice = () => {
@@ -55,18 +54,15 @@ const CourseChoice = () => {
             ]);
             return true;
         };
-
         const backHandler = BackHandler.addEventListener(
             "hardwareBackPress",
             backAction
         );
-
         return () => backHandler.remove();
     }, []);
 
     useEffect(() => {
         CourseRequest()
-
         console.log(atId)
     }, [])
 
