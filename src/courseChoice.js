@@ -6,6 +6,7 @@ import {
     BackHandler,
     Dimensions,
     SafeAreaView,
+    ScrollView,
     Text,
     TouchableWithoutFeedback,
     View,
@@ -107,10 +108,11 @@ const CourseChoice = () => {
             {/* 헤더 끝 */}
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 {/* <CourseBlockPush></CourseBlockPush> */}
-                {courseList.map((course, index) => <CourseBlock key={index} course={course.course} />)}
-
+                <ScrollView>
+                    {courseList.map((course, index) => <CourseBlock key={index} course={course.course} />)}
+                </ScrollView>
             </View>
-            <View style={{ height: 50 }}></View>
+
         </SafeAreaView>
     )
 }

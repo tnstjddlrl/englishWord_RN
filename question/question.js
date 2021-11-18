@@ -112,7 +112,7 @@ const Question = () => {
         await axios.get('https://hjong0108.cafe24.com/bbs/post.php', {
             params: {
                 type: 'new_course',
-                grade: '고등학교1학년', //atGrade
+                grade: atGrade, //atGrade
                 id: atId, //atId
                 cnt: 5,
             },
@@ -583,8 +583,8 @@ const Question = () => {
                         Alert.alert('먼저 시작버튼을 눌러주세요!')
                     }
                 }}>
-                    <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect1}</Text>
+                    <View style={{ borderRadius: 10, width: chwidth - 40, height: '15%', maxHeight: 80, marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black', textAlignVertical: 'center', textAlign: 'center', height: 20 }}>{bottom_collect1}</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
@@ -600,8 +600,8 @@ const Question = () => {
 
 
                 }}>
-                    <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect2}</Text>
+                    <View style={{ borderRadius: 10, width: chwidth - 40, height: '15%', maxHeight: 80, marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black', textAlignVertical: 'center', textAlign: 'center', height: 20 }}>{bottom_collect2}</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
@@ -615,8 +615,8 @@ const Question = () => {
                         Alert.alert('먼저 시작버튼을 눌러주세요!')
                     }
                 }}>
-                    <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect3}</Text>
+                    <View style={{ borderRadius: 10, width: chwidth - 40, height: '15%', maxHeight: 80, marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black', textAlignVertical: 'center', textAlign: 'center', height: 20 }}>{bottom_collect3}</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
@@ -630,8 +630,8 @@ const Question = () => {
                         Alert.alert('먼저 시작버튼을 눌러주세요!')
                     }
                 }}>
-                    <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect4}</Text>
+                    <View style={{ borderRadius: 10, width: chwidth - 40, height: '15%', maxHeight: 80, marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black', textAlignVertical: 'center', textAlign: 'center', height: 20 }}>{bottom_collect4}</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
@@ -646,8 +646,8 @@ const Question = () => {
                         Alert.alert('먼저 시작버튼을 눌러주세요!')
                     }
                 }}>
-                    <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect5}</Text>
+                    <View style={{ borderRadius: 10, width: chwidth - 40, height: '15%', maxHeight: 80, marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black', textAlignVertical: 'center', textAlign: 'center', height: 20 }}>{bottom_collect5}</Text>
                     </View>
                 </TouchableWithoutFeedback>
             </View>

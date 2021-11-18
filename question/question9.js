@@ -676,7 +676,7 @@ const Question9 = () => {
                     }
                 }}>
                     <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect1}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black', textAlignVertical: 'center', textAlign: 'center', height: 20 }}>{bottom_collect1}</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
@@ -690,7 +690,7 @@ const Question9 = () => {
                     }
                 }}>
                     <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect2}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black', textAlignVertical: 'center', textAlign: 'center', height: 20 }}>{bottom_collect2}</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
@@ -704,7 +704,7 @@ const Question9 = () => {
                     }
                 }}>
                     <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect3}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black', textAlignVertical: 'center', textAlign: 'center', height: 20 }}>{bottom_collect3}</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
@@ -718,7 +718,7 @@ const Question9 = () => {
                     }
                 }}>
                     <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect4}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black', textAlignVertical: 'center', textAlign: 'center', height: 20 }}>{bottom_collect4}</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
@@ -732,7 +732,7 @@ const Question9 = () => {
                     }
                 }}>
                     <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect5}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black', textAlignVertical: 'center', textAlign: 'center', height: 20 }}>{bottom_collect5}</Text>
                     </View>
                 </TouchableWithoutFeedback>
             </View>
