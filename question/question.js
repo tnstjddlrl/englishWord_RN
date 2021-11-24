@@ -529,27 +529,27 @@ const Question = () => {
             <View style={{ width: chwidth, alignItems: 'center', marginTop: 10 }}>
                 <View style={{ marginBottom: 2 }}>
                     <View style={{ width: chwidth / 3.5, height: chheight / 11, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 1 ? 'rgb(94,131,222)' : 'rgb(238,248,244)', borderTopLeftRadius: 10, borderTopRightRadius: 10 }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{cc1 === 'e' ? collect1 : collect1_kor.replace(/\n/g, "")}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{cc1 === 'e' ? collect1 : collect1_kor.replace(/(\r\n|\n|\r)/gm, "")}</Text>
                     </View>
                 </View>
 
                 <View style={{ flexDirection: 'row', marginBottom: 2 }}>
                     <View style={{ width: chwidth / 3.5, height: chheight / 11, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 2 ? 'rgb(94,131,222)' : 'rgb(238,248,244)', borderTopLeftRadius: 10, borderBottomLeftRadius: 10, marginRight: 2 }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{cc2 === 'e' ? collect2 : collect2_kor.replace(/\n/g, "")}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{cc2 === 'e' ? collect2 : collect2_kor.replace(/(\r\n|\n|\r)/gm, "")}</Text>
                     </View>
 
                     <View style={{ width: chwidth / 3.5, height: chheight / 11, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 3 ? 'rgb(94,131,222)' : 'rgb(238,248,244)', marginRight: 2 }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{cc3 === 'e' ? collect3 : collect3_kor.replace(/\n/g, "")}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{cc3 === 'e' ? collect3 : collect3_kor.replace(/(\r\n|\n|\r)/gm, "")}</Text>
                     </View>
 
                     <View style={{ width: chwidth / 3.5, height: chheight / 11, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 4 ? 'rgb(94,131,222)' : 'rgb(238,248,244)', borderTopRightRadius: 10, borderBottomRightRadius: 10 }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{cc4 === 'e' ? collect4 : collect4_kor.replace(/\n/g, "")}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{cc4 === 'e' ? collect4 : collect4_kor.replace(/(\r\n|\n|\r)/gm, "")}</Text>
                     </View>
                 </View>
 
                 <View>
                     <View style={{ width: chwidth / 3.5, height: chheight / 11, alignItems: 'center', justifyContent: 'center', backgroundColor: redQuestion == 5 ? 'rgb(94,131,222)' : 'rgb(238,248,244)', borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{cc5 === 'e' ? collect5 : collect5_kor.replace(/\n/g, "")}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{cc5 === 'e' ? collect5 : collect5_kor.replace(/(\r\n|\n|\r)/gm, "")}</Text>
                     </View>
                 </View>
             </View>
