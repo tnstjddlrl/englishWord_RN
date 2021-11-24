@@ -13,6 +13,7 @@ import Question9 from './question/question9';
 import QuestionChoice from './question/questionChoice';
 import FinalQuestion from './question/finalQuestion';
 import Loading from './src/loading';
+import Register from './src/register';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,8 @@ const App = () => {
           <Stack.Screen name="로딩" component={Loading} />
 
           <Stack.Screen name="로그인" component={Login} />
+          <Stack.Screen name="회원가입" component={Register} />
+
           <Stack.Screen name="가짜메인" component={Fakemain} />
 
           <Stack.Screen name="코스선택" component={CourseChoice} />

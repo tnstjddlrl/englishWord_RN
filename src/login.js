@@ -141,6 +141,7 @@ const Login = () => {
                             style={{ height: 50, width: chwidth - 70, borderColor: 'gray', marginLeft: 10 }}
                             placeholder={'비밀번호'}
                             onChangeText={setPwd}
+                            secureTextEntry={true}
                         ></TextInput>
                     </View>
 
@@ -160,6 +161,12 @@ const Login = () => {
                     <TouchableWithoutFeedback onPress={() => { request() }}>
                         <View style={{ width: chwidth - 60, height: 50, backgroundColor: 'rgb(53,93,194)', borderRadius: 10, marginTop: 20, alignItems: 'center', justifyContent: 'center' }}>
                             <Text style={{ fontFamily: 'Jua-Regular', color: 'white', fontSize: 20 }}>로그인</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+
+                    <TouchableWithoutFeedback onPress={() => { navigation.navigate('회원가입') }}>
+                        <View style={{ width: chwidth - 60, height: 50, backgroundColor: 'white', borderWidth: 2, borderColor: 'rgb(53,93,194)', borderRadius: 10, marginTop: 10, alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={{ fontFamily: 'Jua-Regular', color: 'rgb(53,93,194)', fontSize: 20 }}>회원가입</Text>
                         </View>
                     </TouchableWithoutFeedback>
 
