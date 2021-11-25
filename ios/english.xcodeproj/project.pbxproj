@@ -14,6 +14,7 @@
 		57A73BBB1E094F19B9B54956 /* Jua-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4A477E193D23412D94FF7B4C /* Jua-Regular.ttf */; };
 		64EBB93BA3D6D61C4FB1CC3E /* libPods-english-englishTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3517E4D73247EA2EA6B9DCC5 /* libPods-english-englishTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		856EB746274F2391008D4477 /* aa.png in Resources */ = {isa = PBXBuildFile; fileRef = 856EB745274F2391008D4477 /* aa.png */; };
 		D38EBB62EB2DAD20CF85ECE0 /* libPods-english.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12E1F9629540052261978803 /* libPods-english.a */; };
 /* End PBXBuildFile section */
 
@@ -40,9 +41,10 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = english/main.m; sourceTree = "<group>"; };
 		2C213D10A42C6253431469F7 /* Pods-english-englishTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-english-englishTests.release.xcconfig"; path = "Target Support Files/Pods-english-englishTests/Pods-english-englishTests.release.xcconfig"; sourceTree = "<group>"; };
 		3517E4D73247EA2EA6B9DCC5 /* libPods-english-englishTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-english-englishTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4A477E193D23412D94FF7B4C /* Jua-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Jua-Regular.ttf"; path = "../assets/fonts/Jua-Regular.ttf"; sourceTree = "<group>"; };
+		4A477E193D23412D94FF7B4C /* Jua-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Jua-Regular.ttf"; path = "../assets/fonts/Jua-Regular.ttf"; sourceTree = "<group>"; };
 		58609EB14908D1E71D9985A2 /* Pods-english.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-english.release.xcconfig"; path = "Target Support Files/Pods-english/Pods-english.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = english/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		856EB745274F2391008D4477 /* aa.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = aa.png; path = ../android/app/src/main/res/drawable/aa.png; sourceTree = "<group>"; };
 		CBA896B2DAE26320FFD531BF /* Pods-english.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-english.debug.xcconfig"; path = "Target Support Files/Pods-english/Pods-english.debug.xcconfig"; sourceTree = "<group>"; };
 		D350D63204630208A7770FCE /* Pods-english-englishTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-english-englishTests.debug.xcconfig"; path = "Target Support Files/Pods-english-englishTests/Pods-english-englishTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -94,6 +96,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				856EB745274F2391008D4477 /* aa.png */,
 			);
 			name = english;
 			sourceTree = "<group>";
@@ -116,7 +119,6 @@
 				D350D63204630208A7770FCE /* Pods-english-englishTests.debug.xcconfig */,
 				2C213D10A42C6253431469F7 /* Pods-english-englishTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -126,7 +128,6 @@
 				4A477E193D23412D94FF7B4C /* Jua-Regular.ttf */,
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -258,6 +259,7 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				57A73BBB1E094F19B9B54956 /* Jua-Regular.ttf in Resources */,
+				856EB746274F2391008D4477 /* aa.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
