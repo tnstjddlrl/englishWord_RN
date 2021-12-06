@@ -299,7 +299,7 @@ const FinalQuestion = () => {
                         checkCollect(bottom_collect1);
                     }}>
                         <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
-                            <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect1}</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect1.replace(/(\r\n|\n|\r)/gm, "")}</Text>
                         </View>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback onPress={() => {
@@ -307,7 +307,7 @@ const FinalQuestion = () => {
                         checkCollect(bottom_collect2);
                     }}>
                         <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
-                            <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect2}</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect2.replace(/(\r\n|\n|\r)/gm, "")}</Text>
                         </View>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback onPress={() => {
@@ -315,7 +315,7 @@ const FinalQuestion = () => {
                         checkCollect(bottom_collect3);
                     }}>
                         <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
-                            <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect3}</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect3.replace(/(\r\n|\n|\r)/gm, "")}</Text>
                         </View>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback onPress={() => {
@@ -323,7 +323,7 @@ const FinalQuestion = () => {
                         checkCollect(bottom_collect4);
                     }}>
                         <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
-                            <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect4}</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect4.replace(/(\r\n|\n|\r)/gm, "")}</Text>
                         </View>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback onPress={() => {
@@ -331,7 +331,7 @@ const FinalQuestion = () => {
                         checkCollect(bottom_collect5);
                     }}>
                         <View style={{ borderRadius: 10, width: chwidth - 40, height: 50, maxHeight: '15%', marginBottom: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(245,245,245)' }}>
-                            <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect5}</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{bottom_collect5.replace(/(\r\n|\n|\r)/gm, "")}</Text>
                         </View>
                     </TouchableWithoutFeedback>
                 </View>
