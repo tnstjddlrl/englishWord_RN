@@ -133,6 +133,7 @@ const Login = () => {
                             style={{ height: 50, width: chwidth - 70, borderColor: 'gray', marginLeft: 10 }}
                             placeholder={'아이디'}
                             onChangeText={setId}
+                            placeholderTextColor={'gray'}
                         ></TextInput>
                     </View>
 
@@ -142,6 +143,7 @@ const Login = () => {
                             placeholder={'비밀번호'}
                             onChangeText={setPwd}
                             secureTextEntry={true}
+                            placeholderTextColor={'gray'}
                         ></TextInput>
                     </View>
 

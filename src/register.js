@@ -101,7 +101,7 @@ const Register = () => {
                                 style={{ height: 50, width: chwidth - 70, borderColor: 'gray', marginLeft: 10 }}
                                 placeholder={'아이디'}
                                 onChangeText={setId}
-
+                                placeholderTextColor={'gray'}
                             ></TextInput>
                         </View>
 
@@ -111,6 +111,7 @@ const Register = () => {
                                 placeholder={'비밀번호'}
                                 onChangeText={setPwd}
                                 secureTextEntry={true}
+                                placeholderTextColor={'gray'}
                             ></TextInput>
                         </View>
 
@@ -120,7 +121,7 @@ const Register = () => {
                                 placeholder={'비밀번호 확인'}
                                 onChangeText={setPwdCheck}
                                 secureTextEntry={true}
-
+                                placeholderTextColor={'gray'}
                             ></TextInput>
                         </View>
 
@@ -129,6 +130,7 @@ const Register = () => {
                                 style={{ height: 50, width: chwidth - 70, borderColor: 'gray', marginLeft: 10 }}
                                 placeholder={'이름'}
                                 onChangeText={setName}
+                                placeholderTextColor={'gray'}
                             ></TextInput>
                         </View>
 
@@ -137,6 +139,7 @@ const Register = () => {
                                 style={{ height: 50, width: chwidth - 70, borderColor: 'gray', marginLeft: 10 }}
                                 placeholder={'본인 연락처'}
                                 onChangeText={setPhone}
+                                placeholderTextColor={'gray'}
                             ></TextInput>
                         </View>
 
@@ -145,6 +148,7 @@ const Register = () => {
                                 style={{ height: 50, width: chwidth - 70, borderColor: 'gray', marginLeft: 10 }}
                                 placeholder={'학부모 연락처(선택)'}
                                 onChangeText={setParentPhone}
+                                placeholderTextColor={'gray'}
                             ></TextInput>
                         </View>
 
